@@ -12,5 +12,5 @@ const corsSettings = (req, res) => {
 
 exports.helloWorld = functions.https.onRequest((req, res) => {
     corsSettings(req, res);
-    
+
 });

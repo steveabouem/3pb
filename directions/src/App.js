@@ -1,46 +1,24 @@
 import React, { useEffect } from 'react';
-import './App.css';
-// import { loadMap } from './api';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-
+import './styles/app.scss';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { clientRoutes } from './helpers/routes';
+import { Landing } from './components/Landing';
+import { MapMain } from './components/MapMain';
+import { Nav } from './components/Nav';
+ 
 const App = () => {
-
-  const containerStyle = {
-    width: '400px',
-    height: '400px'
-  };
-
-  const center = {
-    lat: -3.745,
-    lng: -38.523
-  };
-
-  return (
-    <div className="App">
-      <div className="section-wrap">
-        <div className="section-header">
-          <div className="section-title">INDIQUE MOI</div>
-          <div className="section-summary">BLABLABLA</div>
-        </div>
-        <div className="section-main">
-          <div className="section-main-summary">DESCRIPTIONS</div>
-          <div className="map-wrap">
-            <LoadScript
-              googleMapsApiKey="AIzaSyC7YvDDpudkrY7gvbxgLYUqu4nIwSSiijo"
-            >
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={10}
-              >
-                <></>
-              </GoogleMap>
-            </LoadScript>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="App">
+			<BrowserRouter>
+				<Nav/>
+				<Switch>
+					<Route exact path={clientRoutes.home} component={Landing} />
+					<Route path={clientRoutes.map} component={MapMain} />
+				</Switch>
+			</BrowserRouter>
+			<div className="footer"/>
+		</div>
+	);
 }
 
 export default App;
