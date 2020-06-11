@@ -6,7 +6,7 @@ To run the dev environment follow these steps:
 1. **Clone this repository**
 2. **Navigate to the app folder**
 ```
-cd directions)
+cd directions
 ```
 3. **Install all dependencies**
 ```
