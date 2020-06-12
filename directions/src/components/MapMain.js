@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox } from '@react-google-maps/api';
+import React, { useState, useEffect, useContext } from 'react';
+import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplete } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { locations } from '../helpers/locations';
+import { MapSidebar } from './MapSidebar';
+import { MapsContext } from '../helpers/contexts';
 
 export const MapMain = () => {
     const [loading, setLoading] = useState(true);
     const [origin, setOrigin] = useState({lat: 5.30966, lng: -4.01266});
     const [destination, setDestination] = useState(null);
+    const [darkMode, setDarkMode] = useState(false);
+    const [title, setTitle] = useState(null);
     const [zoom, setZoom] = useState(12);
+    const [drawingMode, setDrawingMode] = useState(null);
     
     const validations = Yup.object().shape({
         step1: Yup.string().required().min(4)
@@ -24,13 +27,11 @@ export const MapMain = () => {
     
     const searchLocation = value => {
         // TODO: use the google getPlaces class in the backend to handle this
-        let match = locations.find((l) => [l.name].includes(value.toLowerCase()) ? l.coord : null);
+        let match = locations.find((l) => [l.name].includes(value.toLowerCase()) ? l : null);
 
-        console.log(match);
-        
         if (match) {
             setZoom(14);
-            setOrigin(match);
+            setOrigin(match.coord);
         }
     };
 
@@ -42,7 +43,8 @@ export const MapMain = () => {
         
     };
     
-        
+    
+    
     return (
         <Formik
             initialValues={initialValues}
@@ -50,43 +52,16 @@ export const MapMain = () => {
             onSubmit={submit}
         >
             {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-                <React.Fragment>
+                <MapsContext.Provider value ={{drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination}}>
                     <LoadScript
                         googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
                         loadingElement={Loader}
                         libraries={config.libraries}
                         onLoad={() => setLoading(false)}
                     >
-                        <div className="section-wrap inline" style={{ flex: '0 0 60%' }}>
-                            <div className="sidebar left">
-                                <div className="sidebar-column">
-                                    <label>Main point of interrest</label>
-                                    <div className="sidebar-row">
-                                        <Field name="stop1" className={'rounded-field' + (errors.stop1 && touched.stop1 ? ' invalid-field' : '')} onChange={e => {searchLocation(e.target.value); setFieldValue('stop1', e.target.value);}}/>
-                                    </div>
-                                </div>
-                                <div className="sidebar-column">
-                                    <label>Additional point of interrest</label>
-                                    <div className="sidebar-row">
-                                        <Field name="stop2" className={'rounded-field' + (errors.stop2 && touched.stop2 ? ' invalid-field' : '')} />
-                                    </div>
-                                </div>
-                                <div className="sidebar-column">
-                                    <div className="sidebar-row center">
-                                        Add a new point of interrest  &nbsp;<div className="icon-wrap pointer"><FontAwesomeIcon icon={faPlus} /></div>
-                                    </div>
-                                </div>
-                                <div className="line bottomn" />
-                                <div className="sidebar-column">
-                                    No additional map yet, go ahead and create one!
-                                    </div>
-                            </div>
+                        <div className="section-wrap inline" style={{ flex: '0 1 85%', position: 'relative' }}>
+                            <MapSidebar searchLocation={searchLocation} share={shareLink}/>
                             <div className="map-wrap">
-                                <div className="map-title">
-                                    <Field name="mapTitle" className={'title-field' + (errors.mapTitle && touched.mapTitle ? ' invalid-field' : '')} placeholder="Select a map title..." />
-                                    &nbsp;
-                                    {values.mapTitle && <div className="icon-wrap pointer"><FontAwesomeIcon icon={faCheck}/></div>}
-                                </div>
                                 {loading ? (
                                     <Loader />
                                 ) : (
@@ -94,42 +69,20 @@ export const MapMain = () => {
                                         mapContainerStyle={config.style}
                                         center={origin}
                                         zoom={zoom}
+                                        options={{styles: darkMode ? mapOptions : null}}
                                     >
                                         <StandaloneSearchBox types={config.types} onPlaceChanged={() => console.log('chage')} onLoad={searchBox => console.log(searchBox.getPlaces())}>
                                             <React.Fragment>
                                                 <Field value={values?.stop1} id="inside"/>
-                                                <DrawingManager />
+                                                <DrawingManager drawingMode={drawingMode}/>
                                             </React.Fragment>
                                         </StandaloneSearchBox>
                                     </GoogleMap>
                                 )}
                             </div>
-                            <div className="sidebar right">
-                                <div className="sidebar-column">
-                                    <label>Main point of interrest</label>
-                                    <Field name="stop1" className={'rounded-field' + (errors.stop1 && touched.stop1 ? ' invalid-field' : '')} />
-                                </div>
-                                <div className="sidebar-column">
-                                    <label>Additional point of interrest</label>
-                                    <Field name="stop2" className={'rounded-field' + (errors.stop2 && touched.stop2 ? ' invalid-field' : '')} />
-                                </div>
-                                <div className="sidebar-row center">
-                                    Add a new point of interrest <FontAwesomeIcon icon={faPlus} />
-                                </div>
-                                <div className="line bottomn" />
-                                <div className="sidebar-column">
-                                    No additional map yet, go ahead and create one!
-                                    </div>
-                            </div>
                         </div>
                     </LoadScript>
-                    <div className="section-wrap" style={{ margin: '0 auto', width: '42%' }}>
-                        <div className="section-lane between">
-                            <div className="button pointer standard" onClick={submitForm}>SAVE MAP</div>
-                            <div className="button pointer standard" onClick={shareLink}>SHARE LINK</div>
-                        </div>
-                    </div>
-                </React.Fragment>
+                </MapsContext.Provider>
             )}
         </Formik>
     );
@@ -138,11 +91,94 @@ export const MapMain = () => {
 const config = {
     libraries: ['drawing', 'places'],
     style: {
-        height: 'auto',
-        width: '80%',
-        flex: '1',
-        alignSelf: 'center'
+        height: '100%',
+        width: '100%',
+        flex: 1,
+        alignSelf: 'center',
+        position: 'relative',
+        overflow: 'hidden'
     },
     types: ['geocode', 'cities'],
     fields: ['name']
-}
+};
+
+const mapOptions =   [
+    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [{color: '#263c3f'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#6b9a76'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [{color: '#38414e'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#212a37'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#9ca5b3'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#746855'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#1f2835'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#f3d19c'}]
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [{color: '#2f3948'}]
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: '#17263c'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#515c6d'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: '#17263c'}]
+    }
+  ];
