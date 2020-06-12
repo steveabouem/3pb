@@ -1,6 +1,5 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarker } from '@fortawesome/free-solid-svg-icons'
 
 export const MapStep = ({...props}) => (
     <div className="step-box" key={`step-${props.title}`}>
@@ -9,7 +8,7 @@ export const MapStep = ({...props}) => (
             {props.children}
         </div>
         <div className="avatar">
-            <FontAwesomeIcon icon={props.icon} size={props.size}/>
+            <FontAwesomeIcon icon={props.icon} size={props.size} color="#27ccc0"/>
         </div>
     </div>
 );
