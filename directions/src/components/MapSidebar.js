@@ -5,6 +5,7 @@ import { icons } from '../common/icons';
 import ReactTooltip from 'react-tooltip';
 import { MapTitle } from './MapTitle';
 import { MapsContext } from '../helpers/contexts';
+import { modes } from './MapMain';
 
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue } = useFormikContext();
@@ -68,4 +69,3 @@ export const MapSidebar = ({ ...props }) => {
     );
 };
 
-const modes = {marker:'marker', polyline:'polyline'};
