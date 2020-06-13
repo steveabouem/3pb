@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplete, Polyline } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplete, Polyline, Marker } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -52,7 +52,7 @@ export const MapMain = () => {
       onSubmit={submit}
     >
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-        <MapsContext.Provider value={{ drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination }}>
+        <MapsContext.Provider value={{ drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination, zoom, setZoom }}>
           <LoadScript
             googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
             loadingElement={Loader}
@@ -76,7 +76,6 @@ export const MapMain = () => {
                           <Field value={values?.stop1} id="inside" />
                           <DrawingManager drawingMode={drawingMode} />
                           <Polyline
-                            path={}
                             options={{
                               geodesic: true,
                               strokeColor: 'yellow',
@@ -84,11 +83,9 @@ export const MapMain = () => {
                               strokeWeight: 2,
                             }}
                           />
-                          <Marker
+                          {/* <Marker
                             position={props.currentPosition}
-                            defaultIcon={
-                              { url: '/static/images/flight-marker.png', scaledSize: { height: 16, width: 16 }, anchor: new google.maps.Point(8, 8) }}
-                          />
+                          /> */}
 
                         </React.Fragment>
                       </StandaloneSearchBox>

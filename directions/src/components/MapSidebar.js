@@ -6,10 +6,11 @@ import ReactTooltip from 'react-tooltip';
 import { MapTitle } from './MapTitle';
 import { MapsContext } from '../helpers/contexts';
 import { modes } from './MapMain';
+import { Slider } from '../common/Slider';
 
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue } = useFormikContext();
-    const { drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination } = useContext(MapsContext);
+const { drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination, zoom, setZoom } = useContext(MapsContext);
     const [active, setActive] = useState(false);
 
     const toggleSidebar = () => {
@@ -18,23 +19,31 @@ export const MapSidebar = ({ ...props }) => {
 
     return (
         <div className={'sidebar left' + (!active ? ' collapsed' : '')}>
-            <div className="controls-row" >
-                <FontAwesomeIcon icon={active ? icons.faCompressAlt : icons.faExpandAlt} data-tip="" data-for="expand-tip" className="icon pointer" onClick={toggleSidebar} />
-                <ReactTooltip className="tooltip" id="expand-tip">{!active ? 'Options' : 'Collapse'}</ReactTooltip>
-            </div>
+            {active ? (
+                <label>Controls</label>
+            ) : (
+                <div className="controls-row" >
+                    <FontAwesomeIcon icon={active ? icons.faCompressAlt : icons.faExpandAlt} data-tip="" data-for="expand-tip" className="icon pointer" onClick={toggleSidebar} />
+                    <ReactTooltip className="tooltip" id="expand-tip">{!active ? 'Options' : 'Collapse'}</ReactTooltip>
+                </div>
+            )}
             {active && (
                 <React.Fragment>
-                    <label>Controls</label>
-                    <div className="controls-row" >
+                    <div className="controls-row">
                         <FontAwesomeIcon icon={icons.faMapMarkedAlt} data-tip="" data-for="type-marker" className={'icon pointer' + (drawingMode === modes.marker ? ' active' : '')} onClick={() =>setDrawingMode(modes.marker)}/>
                         <FontAwesomeIcon icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (drawingMode === modes.polyline ? ' active' : '')} onClick={() =>setDrawingMode(modes.polyline)}/>
                         <FontAwesomeIcon icon={icons.faHandPointer} data-tip="" data-for="type-default" className={'icon pointer' + (!drawingMode ? ' active' : '')} onClick={() =>setDrawingMode(null)}/>
                         <FontAwesomeIcon icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (darkMode ? ' active' : '')} onClick={() =>setDarkMode(!darkMode)}/>
+                        <FontAwesomeIcon icon={active ? icons.faCompressAlt : icons.faExpandAlt} data-tip="" data-for="expand-tip" className="icon pointer" onClick={toggleSidebar} />
 
                         <ReactTooltip className="tooltip" id="type-marker">{ drawingMode === modes.marker ? 'Markers enabled' : 'Enable markers'}</ReactTooltip>
                         <ReactTooltip className="tooltip" id="type-polyline">{ drawingMode === modes.polyline ? 'Drawing enabled' : 'Enable drawing'}</ReactTooltip>
                         <ReactTooltip className="tooltip" id="type-default">{ drawingMode ? 'Enable pointer' : 'Pointer enabled'}</ReactTooltip>
                         <ReactTooltip className="tooltip" id="dark-mode">{ darkMode ? 'Light map' : 'Dark map'}</ReactTooltip>
+                        <ReactTooltip className="tooltip" id="expand-tip">{!active ? 'Options' : 'Collapse'}</ReactTooltip>
+                    </div>
+                    <div className="controls-row">
+                        <Slider min="1" max="20" val="12" tip="Zoom"/>
                     </div>
                     <div className="sidebar-column">
                         <label>Name your map</label>
