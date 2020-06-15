@@ -1,5 +1,6 @@
 export const clientRoutes = {
     home: '/',
     mapMain: '/map',
-    auth: '/authentication'
+    signin: '/signin',
+    signup: '/signup'
 };

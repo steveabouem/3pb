@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import { clientRoutes } from '../helpers/routes';
 import { Loader } from '../common/Loader';
 import { MapStep } from './MapStep';
 import { icons } from '../common/icons';
 import logo from '../assets/logo.png';
+import { UserContext } from '../helpers/contexts';
 
 
 export const Landing = () => {
     // TODO: default to true
+    const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -37,7 +39,7 @@ export const Landing = () => {
                 </MapStep>
             </div>
             <div className="section-lane center">
-                <NavLink to={clientRoutes.mapMain}><div className="button large">CREATE YOUR MAP ADDRESS</div></NavLink>
+                <Link to={user ? clientRoutes.mapMain : clientRoutes.signin}><div className="button large">CREATE YOUR MAP ADDRESS</div></Link>
             </div>
         </div>
     );

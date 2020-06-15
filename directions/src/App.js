@@ -16,15 +16,16 @@ const App = () => {
 			<FirebaseProvider>
 				<Nav />
 				<Switch>
-					<Route path={clientRoutes.auth} component={Authentication}/>
 					<Route exact path={clientRoutes.home} component={Landing}/>
 					<Route path={clientRoutes.map} component={MapMain}/>
+					<Route path={clientRoutes.signin} component={Authentication}/>
+					<Route path={clientRoutes.signup} component={Authentication}/>
 					<Route path="*">
 						none
 					</Route>
 				</Switch>
 			</FirebaseProvider>
-			<div className="footer" />
+			<div className="footer"/>
 		</div>
 	);
 }
