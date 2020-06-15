@@ -1,4 +1,5 @@
 export const clientRoutes = {
     home: '/',
-    mapMain: '/map'
+    mapMain: '/map',
+    auth: '/authentication'
 };
