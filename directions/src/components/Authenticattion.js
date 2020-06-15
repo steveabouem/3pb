@@ -32,8 +32,8 @@ export const Authentication = () => {
 
         } else {
             signup(values)
-                .then(data => {
-                    createUser(data);
+                .then(() => {
+                    createUser(values);
                 })
                 .then(data => {
                     setLoading(false);

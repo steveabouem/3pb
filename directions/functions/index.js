@@ -28,7 +28,6 @@ exports.createUser = functions.https.onRequest((req, res) => {
                     res.send(doc.data());
                 } else {
                     res.send('None found');
-
                 }
             }).catch(function(error) {
                 res.send('Error', error);
@@ -40,6 +39,8 @@ exports.createUser = functions.https.onRequest((req, res) => {
 
 exports.getUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
+        console.log('Request body', req.body);
+        
         const {email} = req.body;
         users.doc(email).get().then(function(doc) {
             if (doc.exists) {

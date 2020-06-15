@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserContext } from '../helpers/contexts';
-import { auth, firestore } from '../helpers/api';
-
+import { auth, firestore, getUser } from '../helpers/api';
 
 export const FirebaseProvider = ({children}) => {
     const [user, setUser] = useState(null);
@@ -9,10 +8,20 @@ export const FirebaseProvider = ({children}) => {
    
 
     useEffect(() => {
-        auth.onAuthStateChanged((user) => {
-            console.log('checking: ', user);
-            
-            setUser({user});
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                getUser(user.email)
+                    .then(res => {
+                        console.log({res});
+                        
+                        if (res.data.code === 200) {
+                            setUser(res.data.data);
+                        }
+                    })
+                    .catch(() => {
+                        return;
+                    }); 
+            }
           });
     }, []);
 
