@@ -15,7 +15,7 @@ export const Landing = () => {
 
     useEffect(() => {
         setLoading(false);
-    }, [])
+    }, []);
 
     return loading ? (
         <Loader/>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserContext } from '../helpers/contexts';
-import { auth, firestore } from '../helpers/firebase';
+import { auth, firestore } from '../helpers/api';
 
 
 export const FirebaseProvider = ({children}) => {
@@ -9,7 +9,9 @@ export const FirebaseProvider = ({children}) => {
    
 
     useEffect(() => {
-        auth.onAuthStateChanged(({user}) => {
+        auth.onAuthStateChanged((user) => {
+            console.log('checking: ', user);
+            
             setUser({user});
           });
     }, []);

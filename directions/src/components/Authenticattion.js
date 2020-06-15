@@ -3,30 +3,41 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { useHistory, Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../helpers/contexts';
-import { auth } from '../helpers/firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { icons } from '../common/icons';
+import { signup } from '../helpers/api';
+import { createUser } from '../helpers/api';
+import { Loader } from '../common/Loader';
 
 export const Authentication = () => {
+    const [loading, setLoading] = useState(false);
     const location = useLocation();
-    const isLogingIn = true;
-    console.log({location});
-    
+    const history = useHistory();
 
-    const loginValidations = Yup.object().shape({
-        email: Yup.string().email().required().min(4),
+    const isSigningIn = location.pathname.includes('signin');
+
+    const valiations = Yup.object().shape({
+        username: Yup.string().min(4),
+        email: Yup.string().email().required(),
         password: Yup.string().required().min(8),
-        conf_password: isLogingIn ? Yup.string() : Yup.string().required().min(8)
+        conf_password: isSigningIn ? Yup.string() : Yup.string().required().min(8)
     });
 
-    const submit = ({ email, password, conf_password }) => {
-        if (isLogingIn) {
+    const submit = (values, actions) => {
+        setLoading(true);
+        if (values.conf_password && values.conf_password !== values.password) {
+            setLoading(false);
+            return;
+        } else if (isSigningIn) {
 
         } else {
-            auth.createUserWithEmailAndPassword(email, password)
+            signup(values)
                 .then(data => {
-                    console.log(data);
-
+                    createUser(data);
+                })
+                .then(data => {
+                    setLoading(false);
+                    history.push('/map');
                 })
                 .catch(e => {
                     console.log({ e });
@@ -37,45 +48,56 @@ export const Authentication = () => {
 
     return (
         <div className="section-wrap">
-            <Formik
-                onSubmit={(values, actions) => submit(values, actions)}
-                initialValues={{
-                    email: '',
-                    password: '',
-                    conf_password: '',
-                }}
-                validationSchema={loginValidations}
-            >
-                {({ touched, errors, values, submitForm, isValid, isSubmitting, resetForm }) => (
-                    <div className="section-wrap center">
-                        <div className="section-lane">
-                            <label>Username</label>
+            {loading ? (
+                <Loader/>
+            ) : (
+                <Formik
+                    onSubmit={(values, actions) => submit(values, actions)}
+                    initialValues={{
+                        username: '',
+                        email: '',
+                        password: '',
+                        conf_password: '',
+                    }}
+                    validationSchema={valiations}
+                >
+                    {({ touched, errors, values, submitForm, isValid, isSubmitting, resetForm }) => (
+                        <div className="section-wrap center">
+                            <div className="section-lane">
+                                <label>Username</label>
+                            </div>
+                            <div className="section-lane">
+                                <Field name="username" className={'rounded-field' + (errors.username & touched.username ? ' invalid' : '')} />
+                            </div>
+                            <div className="section-lane">
+                                <label>Email</label>
+                            </div>
+                            <div className="section-lane">
+                                <Field name="email" className={'rounded-field' + (errors.email & touched.email ? ' invalid' : '')} />
+                            </div>
+                            <div className="section-lane">
+                                <label>Password</label>
+                            </div>
+                            <div className="section-lane">
+                                <Field name="password" type="password" className={'rounded-field' + (errors.password & touched.password ? ' invalid' : '')} />
+                            </div>
+                            {!isSigningIn && (
+                                <React.Fragment>
+                                    <div className="section-lane">
+                                        <label>Confirm password</label>
+                                    </div>
+                                    <div className="section-lane">
+                                        <Field name="conf_password" type="password" className={'rounded-field' + (errors.conf_password & touched.conf_password ? ' invalid' : '')} />
+                                    </div>
+                                </React.Fragment>
+                            )}
+                            <div className="section-lane">
+                                <FontAwesomeIcon className={'icon' + (!isValid ? ' inactive' : ' pointer')} icon={icons.faPlay} onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}/>
+                            </div>
                         </div>
-                        <div className="section-lane">
-                            <Field name="email" className={'rounded-field' + (errors.email & touched.email ? ' error' : '')} />
-                        </div>
-                        <div className="section-lane">
-                            <label>Password</label>
-                        </div>
-                        <div className="section-lane">
-                            <Field name="password" className={'rounded-field' + (errors.password & touched.password ? ' error' : '')} />
-                        </div>
-                        {!isLogingIn && (
-                            <React.Fragment>
-                                <div className="section-lane">
-                                    <label>Confirm password</label>
-                                </div>
-                                <div className="section-lane">
-                                    <Field name="conf_password" className={'rounded-field' + (errors.conf_password & touched.conf_password ? ' error' : '')} />
-                                </div>
-                            </React.Fragment>
-                        )}
-                         <div className="section-lane">
-                            <FontAwesomeIcon className={'icon' + (!isValid ? ' inactive' : ' pointer')} icon={icons.faPlay} onClick={(isValid && !isSubmitting) ? submitForm(values) : null}/>
-                        </div>
-                    </div>
-                )}
-            </Formik>
+                    )}
+                </Formik>
+            )}
         </div>
     );
 };
