@@ -9,14 +9,16 @@ import { modes } from './MapMain';
 import { Slider } from '../common/Slider';
 
 export const MapSidebar = ({ ...props }) => {
-    const { values, errors, touched, setFieldValue } = useFormikContext();
-const { drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination, zoom, setZoom } = useContext(MapsContext);
+    const { values, errors, touched, setFieldValue, submitForm } = useFormikContext();
+    const { drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination, zoom, setZoom } = useContext(MapsContext);
     const [active, setActive] = useState(false);
 
     const toggleSidebar = () => {
         setActive(!active);
     };
 
+    // console.log(auth);
+    
     return (
         <div className={'sidebar left' + (!active ? ' collapsed' : '')}>
             {active ? (
@@ -70,7 +72,7 @@ const { drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDest
                     </div>
                     <div className="line bottomn" />
                     <div className="sidebar-column">
-                        No additional map yet, go ahead and create one!
+                        <div className="button standard" onClick={submitForm}>SAVE</div>
                     </div>
                 </React.Fragment>
             )}

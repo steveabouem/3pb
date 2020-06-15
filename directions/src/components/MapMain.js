@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplete, Polyline, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplete, Polyline, Data } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -71,22 +71,21 @@ export const MapMain = () => {
                       zoom={zoom}
                       options={{ styles: darkMode ? mapOptions : null }}
                     >
-                      <StandaloneSearchBox types={config.types} onPlaceChanged={() => console.log('chage')} onLoad={searchBox => console.log(searchBox.getPlaces())}>
+                      <StandaloneSearchBox types={config.types} onPlaceChanged={() => console.log('chage')}>
                         <React.Fragment>
-                          <Field value={values?.stop1} id="inside" />
-                          <DrawingManager drawingMode={drawingMode} />
-                          <Polyline
+                          <Field value={values?.stop1} id="inside"/>
+                          <DrawingManager 
                             options={{
-                              geodesic: true,
-                              strokeColor: 'yellow',
-                              strokeOpacity: 1.0,
-                              strokeWeight: 2,
+                              drawingMode,
+                              polylineOptions: {
+                                controls: ['Point', 'LineString', 'Polygon'],
+                                fillColor: "red",
+                                strokeColor: 'purple',
+                                strokeOpacity: 1,
+                                strokeWeight: 5
+                              }
                             }}
                           />
-                          {/* <Marker
-                            position={props.currentPosition}
-                          /> */}
-
                         </React.Fragment>
                       </StandaloneSearchBox>
                     </GoogleMap>
@@ -103,7 +102,7 @@ export const MapMain = () => {
 export const modes = { marker: 'marker', polyline: 'polyline' };
 
 const config = {
-  libraries: ['drawing', 'places'],
+  libraries: ['drawing', 'places', ],
   style: {
     height: '100%',
     width: '100%',
