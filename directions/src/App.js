@@ -5,18 +5,26 @@ import { clientRoutes } from './helpers/routes';
 import { Landing } from './components/Landing';
 import { MapMain } from './components/MapMain';
 import { Nav } from './components/Nav';
- 
+import { UserContext } from './helpers/contexts';
+import { FirebaseProvider } from './components/FirbaseProvider';
+import { Authentication } from './components/Authenticattion';
+
+
 const App = () => {
 	return (
 		<div className="App">
-			<BrowserRouter>
-				<Nav/>
+			<FirebaseProvider>
+				<Nav />
 				<Switch>
-					<Route exact path={clientRoutes.home} component={Landing} />
-					<Route path={clientRoutes.map} component={MapMain} />
+					<Route path={clientRoutes.auth} component={Authentication}/>
+					<Route exact path={clientRoutes.home} component={Landing}/>
+					<Route path={clientRoutes.map} component={MapMain}/>
+					<Route path="*">
+						none
+					</Route>
 				</Switch>
-			</BrowserRouter>
-			<div className="footer"/>
+			</FirebaseProvider>
+			<div className="footer" />
 		</div>
 	);
 }
