@@ -23,10 +23,10 @@ export const Nav = () => {
                     </div>
                 ) : null}
                 <div className="nav-section">
-                    <NavLink to={clientRoutes.home} activeClassName="active">
+                    <NavLink to={clientRoutes.auth} activeClassName="active">
                         <div className="button standard">Signin</div>
                     </NavLink>
-                    <NavLink to={clientRoutes.home} activeClassName="active">
+                    <NavLink to={clientRoutes.auth} activeClassName="active">
                         <div className="button standard">Signup</div>
                     </NavLink>
                 </div>
