@@ -20,8 +20,16 @@ body {
         }
     }
     // GOOGLE MAPS CLASSES______
-    .autocomplete-field {
+    #autocomplete-field {
         position: absolute;
+        z-index: 35;
+        left: 1%;
+        top: 1%;
+        height: 35px;
+        width: 20%;
+        padding: 1%;
+        color: grey;
+        border-radius: 15px;
     }
     .gmnoprint {
         display: none;
@@ -99,7 +107,7 @@ body {
         border-radius: 10px;
         padding: 1%;
         &.invalid {
-            border-color: rgb(110, 61, 61);
+            border-color: #9f3838;
             background: rgba(255, 0, 0, 0.088);
         }
     }
@@ -291,7 +299,7 @@ body {
                 .section-lane {
                     display: flex;
                     flex: auto;
-                    padding: 15px 0;
+                    padding: 15px;
                     &.small {
                         flex: 0 0 10%;
                     }

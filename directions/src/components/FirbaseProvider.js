@@ -12,8 +12,6 @@ export const FirebaseProvider = ({children}) => {
             if (user) {
                 getUser(user.email)
                     .then(res => {
-                        console.log({res});
-                        
                         if (res.data.code === 200) {
                             setUser(res.data.data);
                         }

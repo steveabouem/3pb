@@ -15,7 +15,8 @@
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.6.1",
     "formik": "^2.1.4",
-    "moment": "^2.26.0"
+    "moment": "^2.26.0",
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0"

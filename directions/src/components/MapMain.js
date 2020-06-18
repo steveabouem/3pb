@@ -3,7 +3,6 @@ import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplet
 import { Loader } from '../common/Loader';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
-import { locations } from '../helpers/locations';
 import { MapSidebar } from './MapSidebar';
 import { MapsContext } from '../helpers/contexts';
 
@@ -15,6 +14,7 @@ export const MapMain = () => {
   const [title, setTitle] = useState(null);
   const [zoom, setZoom] = useState(12);
   const [drawingMode, setDrawingMode] = useState(null);
+  const [placesData, setPlacesData] = useState({});
 
   const validations = Yup.object().shape({
     step1: Yup.string().required().min(4)
@@ -25,14 +25,9 @@ export const MapMain = () => {
     step1: ''
   };
 
-  const searchLocation = value => {
-    // TODO: use the google getPlaces class in the backend to handle this
-    let match = locations.find((l) => [l.name].includes(value.toLowerCase()) ? l : null);
-
-    if (match) {
-      setZoom(14);
-      setOrigin(match.coord);
-    }
+  const searchLocation = () => {
+    let result = placesData?.getPlace().geometry.location;
+    setOrigin({lat: result.lat() , lng: result.lng()});
   };
 
   const shareLink = () => {
@@ -54,7 +49,7 @@ export const MapMain = () => {
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
         <MapsContext.Provider value={{ drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination, zoom, setZoom }}>
           <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
+            googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
             loadingElement={Loader}
             libraries={config.libraries}
             onLoad={() => setLoading(false)}
@@ -65,16 +60,24 @@ export const MapMain = () => {
                 {loading ? (
                   <Loader />
                 ) : (
+                  <React.Fragment>
                     <GoogleMap
                       mapContainerStyle={config.style}
                       center={origin}
                       zoom={zoom}
                       options={{ styles: darkMode ? mapOptions : null }}
                     >
-                      <StandaloneSearchBox types={config.types} onPlaceChanged={() => console.log('chage')}>
+                      <Autocomplete 
+                        onLoad={ac => setPlacesData(ac)}
+                        onPlaceChanged={searchLocation}
+                      >
                         <React.Fragment>
-                          <Field value={values?.stop1} id="inside"/>
-                          <DrawingManager 
+                          <Field value={values?.stop1} id="autocomplete-field"/>
+                        </React.Fragment>
+                      </Autocomplete>
+                    </GoogleMap>
+                    {/* <GoogleMap>
+                       <DrawingManager 
                             options={{
                               drawingMode,
                               polylineOptions: {
@@ -85,11 +88,11 @@ export const MapMain = () => {
                                 strokeWeight: 5
                               }
                             }}
-                          />
-                        </React.Fragment>
-                      </StandaloneSearchBox>
-                    </GoogleMap>
-                  )}
+                            onPolylineComplete={polyline => setMapData({...mapData, polyline})}
+                        />
+                    </GoogleMap> */}
+                    </React.Fragment>
+                )}
               </div>
             </div>
           </LoadScript>
@@ -102,7 +105,7 @@ export const MapMain = () => {
 export const modes = { marker: 'marker', polyline: 'polyline' };
 
 const config = {
-  libraries: ['drawing', 'places', ],
+  libraries: ['drawing', 'places'],
   style: {
     height: '100%',
     width: '100%',

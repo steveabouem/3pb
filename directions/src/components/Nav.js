@@ -1,16 +1,28 @@
 import React, { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { clientRoutes } from '../helpers/routes';
 import { icons } from '../common/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from '../assets/logo.png';
 import { UserContext } from '../helpers/contexts';
+import { auth } from '../helpers/api';
 
 export const Nav = () => {
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     const location = useLocation();
+    const history = useHistory();
 
+    const signOutUser = () => {
+        auth.signOut()
+            .then(() => {
+                setUser(null);
+                history.push(clientRoutes.home);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    };
     
     return (
         <div  className="nav-wrap">
@@ -28,10 +40,8 @@ export const Nav = () => {
                 <div className="nav-section">
                     {user ? (
                         <React.Fragment>
-                            <div className="username">{user.username}</div>
-                            <Link to={clientRoutes.home} activeClassName="active">
-                                <div className="button standard">Signout</div>
-                            </Link>
+                            <div className="username">{user.email}</div>
+                            <div className="button standard" onClick={signOutUser}>Signout</div>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>

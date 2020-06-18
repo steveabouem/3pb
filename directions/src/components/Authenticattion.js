@@ -17,15 +17,17 @@ export const Authentication = () => {
     const isSigningIn = location.pathname.includes('signin');
 
     const valiations = Yup.object().shape({
-        username: Yup.string().min(4),
         email: Yup.string().email().required(),
-        password: Yup.string().required().min(8),
-        conf_password: isSigningIn ? Yup.string() : Yup.string().required().min(8)
+        password: Yup.string().required().min(8)
     });
 
     const submit = (values, actions) => {
         setLoading(true);
+        actions.setSubmitting(true);
+        
         if (values.conf_password && values.conf_password !== values.password) {
+            actions.setErrors({conf_password: 'not matching'});
+            actions.setSubmitting(false);
             setLoading(false);
             return;
         } else if (isSigningIn) {
@@ -40,8 +42,9 @@ export const Authentication = () => {
                     history.push('/map');
                 })
                 .catch(e => {
-                    console.log({ e });
-
+                    actions.setSubmitting(false);
+                    setLoading(false);
+                    console.log({e});
                 });
         }
     };
@@ -54,7 +57,6 @@ export const Authentication = () => {
                 <Formik
                     onSubmit={(values, actions) => submit(values, actions)}
                     initialValues={{
-                        username: '',
                         email: '',
                         password: '',
                         conf_password: '',
@@ -64,22 +66,16 @@ export const Authentication = () => {
                     {({ touched, errors, values, submitForm, isValid, isSubmitting, resetForm }) => (
                         <div className="section-wrap center">
                             <div className="section-lane">
-                                <label>Username</label>
-                            </div>
-                            <div className="section-lane">
-                                <Field name="username" className={'rounded-field' + (errors.username & touched.username ? ' invalid' : '')} />
-                            </div>
-                            <div className="section-lane">
                                 <label>Email</label>
                             </div>
                             <div className="section-lane">
-                                <Field name="email" className={'rounded-field' + (errors.email & touched.email ? ' invalid' : '')} />
+                                <Field name="email" className={'rounded-field' + (errors.email && touched.email ? ' invalid' : '')} />
                             </div>
                             <div className="section-lane">
                                 <label>Password</label>
                             </div>
                             <div className="section-lane">
-                                <Field name="password" type="password" className={'rounded-field' + (errors.password & touched.password ? ' invalid' : '')} />
+                                <Field name="password" type="password" className={'rounded-field' + (errors.password && touched.password ? ' invalid' : '')} />
                             </div>
                             {!isSigningIn && (
                                 <React.Fragment>
@@ -87,7 +83,7 @@ export const Authentication = () => {
                                         <label>Confirm password</label>
                                     </div>
                                     <div className="section-lane">
-                                        <Field name="conf_password" type="password" className={'rounded-field' + (errors.conf_password & touched.conf_password ? ' invalid' : '')} />
+                                        <Field name="conf_password" type="password" className={'rounded-field' + (errors.conf_password && touched.conf_password ? ' invalid' : '')} />
                                     </div>
                                 </React.Fragment>
                             )}
