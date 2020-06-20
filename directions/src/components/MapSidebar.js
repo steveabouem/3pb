@@ -11,11 +11,6 @@ import { Slider } from '../common/Slider';
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue, submitForm } = useFormikContext();
     const { setMapData, mapData } = useContext(MapsContext);
-    const [active, setActive] = useState(false);
-
-    const toggleSidebar = () => {
-        setActive(!active);
-    };
     
     return (
         <div className="sidebar left">
@@ -44,7 +39,7 @@ export const MapSidebar = ({ ...props }) => {
                 </div>
                 <label>Choisir une destination</label>
                 <div className="sidebar-row">
-                    <Field name="departure" className={'rounded-field' + (errors.departure && touched.departure ? ' invalid-field' : '')} onChange={e => { props.searchLocation(e.target.value); setFieldValue('departure', e.target.value); }}/>
+                    <Field name="destination" className={'rounded-field' + (errors.destination && touched.destination ? ' invalid-field' : '')} onChange={e => { props.searchLocation(e.target.value); setFieldValue('destination', e.target.value); }}/>
                 </div>
             </div>
             <div className="button standard white-bg" onClick={submitForm}>SAUVEGARDER</div>

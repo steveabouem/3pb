@@ -57,7 +57,7 @@ export const MapMain = () => {
                 ) : (
                   <React.Fragment>
                     <GoogleMap
-                      mapContainerStyle={config.style}
+                      mapContainerStyle={{'height': '70px', 'width': '370px', 'position': 'absolute', 'left': '1%', 'top': '1%'}}
                       center={mapData.center}
                       zoom={mapData.zoom}
                       options={{ styles: mapData.darkMode ? mapOptions : null }}
@@ -71,7 +71,12 @@ export const MapMain = () => {
                         </React.Fragment>
                       </Autocomplete>
                     </GoogleMap>
-                    {/* <GoogleMap>
+                    <GoogleMap
+                       mapContainerStyle={config.style}
+                       center={mapData.center}
+                       zoom={mapData.zoom}
+                       options={{ styles: mapData.darkMode ? mapOptions : null }}
+                    >
                        <DrawingManager 
                             options={{
                               drawingMode: mapData.drawingMode,
@@ -85,7 +90,7 @@ export const MapMain = () => {
                             }}
                             onPolylineComplete={polyline => setMapData({...mapData, polyline})}
                         />
-                    </GoogleMap> */}
+                    </GoogleMap>
                   </React.Fragment>
                 )}
               </div>
