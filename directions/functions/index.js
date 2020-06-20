@@ -54,6 +54,17 @@ exports.getUser = functions.https.onRequest((req, res) => {
 
 });
 
+// cette fonction attend les arguments suivants: 
+// {
+//     mapName: string, obligatoire
+//     userName: string, (plus précisément un email) aléatoire
+    // polyline: Object, aléatoire
+    // marker: objet, aléatoire
+    // center: objet, obligatoire,
+    // darkmode: boolean, aléatoire
+// }
+
+// et renvoie le document créé (voir ligne 77)
 exports.createMap = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const id = uuidv4();
@@ -75,6 +86,20 @@ exports.createMap = functions.https.onRequest((req, res) => {
     });
 });
 
+// cette fonction attend les arguments suivants: 
+// {
+//     mapName: string, obligatoire
+//     userName: string (plus précisément un email), aléatoire
+// }
+// et renvoie une ARRAY d'objets map dont chacun a la structure suivante:
+// {
+//     mapName: string, obligatoire
+//     userName: string, (plus précisément un email) aléatoire
+//     polyline: Object, aléatoire
+//     marker: objet, aléatoire
+//     center: objet, obligatoire,
+//     darkmode: boolean, aléatoire
+// }
 exports.getMaps = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         maps.get()
