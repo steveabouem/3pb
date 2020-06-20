@@ -8,12 +8,7 @@ import { MapsContext } from '../helpers/contexts';
 
 export const MapMain = () => {
   const [loading, setLoading] = useState(true);
-  const [origin, setOrigin] = useState({ lat: 5.30966, lng: -4.01266 });
-  const [destination, setDestination] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-  const [title, setTitle] = useState(null);
-  const [zoom, setZoom] = useState(12);
-  const [drawingMode, setDrawingMode] = useState(null);
+  const [mapData, setMapData] = useState({ center: {lat: 5.30966, lng: -4.01266}, zoom: 13, drawingMode: null, darkMode: false});
   const [placesData, setPlacesData] = useState({});
 
   const validations = Yup.object().shape({
@@ -27,7 +22,7 @@ export const MapMain = () => {
 
   const searchLocation = () => {
     let result = placesData?.getPlace().geometry.location;
-    setOrigin({lat: result.lat() , lng: result.lng()});
+    setMapData({...mapData, center: {lat: result.lat() , lng: result.lng()}});
   };
 
   const shareLink = () => {
@@ -47,7 +42,7 @@ export const MapMain = () => {
       onSubmit={submit}
     >
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-        <MapsContext.Provider value={{ drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination, zoom, setZoom }}>
+        <MapsContext.Provider value={{ mapData, setMapData }}>
           <LoadScript
             googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
             loadingElement={Loader}
@@ -63,23 +58,23 @@ export const MapMain = () => {
                   <React.Fragment>
                     <GoogleMap
                       mapContainerStyle={config.style}
-                      center={origin}
-                      zoom={zoom}
-                      options={{ styles: darkMode ? mapOptions : null }}
+                      center={mapData.center}
+                      zoom={mapData.zoom}
+                      options={{ styles: mapData.darkMode ? mapOptions : null }}
                     >
                       <Autocomplete 
                         onLoad={ac => setPlacesData(ac)}
                         onPlaceChanged={searchLocation}
                       >
                         <React.Fragment>
-                          <Field value={values?.stop1} id="autocomplete-field"/>
+                          <Field value={values?.stop1} id="autocomplete-field" placeholder="Chercher un point de départ"/>
                         </React.Fragment>
                       </Autocomplete>
                     </GoogleMap>
-                    {/* <GoogleMap>
+                    <GoogleMap>
                        <DrawingManager 
                             options={{
-                              drawingMode,
+                              drawingMode: mapData.drawingMode,
                               polylineOptions: {
                                 controls: ['Point', 'LineString', 'Polygon'],
                                 fillColor: "red",
@@ -90,7 +85,7 @@ export const MapMain = () => {
                             }}
                             onPolylineComplete={polyline => setMapData({...mapData, polyline})}
                         />
-                    </GoogleMap> */}
+                    </GoogleMap>
                     </React.Fragment>
                 )}
               </div>
