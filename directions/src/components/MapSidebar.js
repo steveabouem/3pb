@@ -16,66 +16,49 @@ export const MapSidebar = ({ ...props }) => {
     const toggleSidebar = () => {
         setActive(!active);
     };
-
-    // console.log(auth);
     
     return (
-        <div className={'sidebar left' + (!active ? ' collapsed' : '')}>
-            {active ? (
+        <div className="sidebar left">
+            <div className="controls-row" >
                 <label>Controls</label>
-            ) : (
-                <div className="controls-row" >
-                    <FontAwesomeIcon icon={active ? icons.faCompressAlt : icons.faExpandAlt} data-tip="" data-for="expand-tip" className="icon pointer" onClick={toggleSidebar} />
-                    <ReactTooltip className="tooltip" id="expand-tip">{!active ? 'Options' : 'Collapse'}</ReactTooltip>
-                </div>
-            )}
-            {active && (
-                <React.Fragment>
-                    <div className="controls-row">
-                        <FontAwesomeIcon icon={icons.faMapMarkedAlt} data-tip="" data-for="type-marker" className={'icon pointer' + (drawingMode === modes.marker ? ' active' : '')} onClick={() =>setDrawingMode(modes.marker)}/>
-                        <FontAwesomeIcon icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (drawingMode === modes.polyline ? ' active' : '')} onClick={() =>setDrawingMode(modes.polyline)}/>
-                        <FontAwesomeIcon icon={icons.faHandPointer} data-tip="" data-for="type-default" className={'icon pointer' + (!drawingMode ? ' active' : '')} onClick={() =>setDrawingMode(null)}/>
-                        <FontAwesomeIcon icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (darkMode ? ' active' : '')} onClick={() =>setDarkMode(!darkMode)}/>
-                        <FontAwesomeIcon icon={active ? icons.faCompressAlt : icons.faExpandAlt} data-tip="" data-for="expand-tip" className="icon pointer" onClick={toggleSidebar} />
+            </div>
+            <div className="controls-row">
+                <FontAwesomeIcon icon={icons.faMapMarkedAlt} data-tip="" data-for="type-marker" className={'icon pointer' + (drawingMode === modes.marker ? ' active' : '')} onClick={() =>setDrawingMode(modes.marker)}/>
+                <FontAwesomeIcon icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (drawingMode === modes.polyline ? ' active' : '')} onClick={() =>setDrawingMode(modes.polyline)}/>
+                <FontAwesomeIcon icon={icons.faHandPointer} data-tip="" data-for="type-default" className={'icon pointer' + (!drawingMode ? ' active' : '')} onClick={() =>setDrawingMode(null)}/>
+                <FontAwesomeIcon icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (darkMode ? ' active' : '')} onClick={() =>setDarkMode(!darkMode)}/>
+                <FontAwesomeIcon icon={active ? icons.faCompressAlt : icons.faExpandAlt} data-tip="" data-for="expand-tip" className="icon pointer" onClick={toggleSidebar} />
+                <Slider min="1" max="20" val="12" tip="Zoom"/>
 
-                        <ReactTooltip className="tooltip" id="type-marker">{ drawingMode === modes.marker ? 'Markers enabled' : 'Enable markers'}</ReactTooltip>
-                        <ReactTooltip className="tooltip" id="type-polyline">{ drawingMode === modes.polyline ? 'Drawing enabled' : 'Enable drawing'}</ReactTooltip>
-                        <ReactTooltip className="tooltip" id="type-default">{ drawingMode ? 'Enable pointer' : 'Pointer enabled'}</ReactTooltip>
-                        <ReactTooltip className="tooltip" id="dark-mode">{ darkMode ? 'Light map' : 'Dark map'}</ReactTooltip>
-                        <ReactTooltip className="tooltip" id="expand-tip">{!active ? 'Options' : 'Collapse'}</ReactTooltip>
-                    </div>
-                    <div className="controls-row">
-                        <Slider min="1" max="20" val="12" tip="Zoom"/>
-                    </div>
-                    <div className="sidebar-column">
-                        <label>Name your map</label>
-                        <div className="sidebar-row">
-                            <MapTitle />
-                        </div>
-                    </div>
-                    <div className="sidebar-column">
-                        <label>Main point of interrest</label>
-                        <div className="sidebar-row">
-                            <Field name="departure" className={'rounded-field' + (errors.departure && touched.departure ? ' invalid-field' : '')} onChange={e => { props.searchLocation(e.target.value); setFieldValue('departure', e.target.value); }}/>
-                        </div>
-                    </div>
-                    <div className="sidebar-column">
-                        <label>Additional point of interrest</label>
-                        <div className="sidebar-row">
-                            <Field name="arrival" className={'rounded-field' + (errors.arrival && touched.arrival ? ' invalid-field' : '')}/>
-                        </div>
-                    </div>
-                    <div className="sidebar-column">
-                        <div className="sidebar-row center">
-                            Add a new point of interrest  &nbsp;<div className="icon-wrap pointer"><FontAwesomeIcon icon={icons.faPlus}/></div>
-                        </div>
-                    </div>
-                    <div className="line bottomn" />
-                    <div className="sidebar-column">
-                        <div className="button standard" onClick={submitForm}>SAVE</div>
-                    </div>
-                </React.Fragment>
-            )}
+                <ReactTooltip className="tooltip" id="type-marker">{ drawingMode === modes.marker ? 'Markers enabled' : 'Enable markers'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="type-polyline">{ drawingMode === modes.polyline ? 'Drawing enabled' : 'Enable drawing'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="type-default">{ drawingMode ? 'Enable pointer' : 'Pointer enabled'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="dark-mode">{ darkMode ? 'Light map' : 'Dark map'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="expand-tip">{!active ? 'Options' : 'Collapse'}</ReactTooltip>
+            </div>
+            <div className="controls-row">
+            </div>
+            <div className="sidebar-column">
+                <label>Name your map</label>
+                <div className="sidebar-row">
+                    <MapTitle />
+                </div>
+            </div>
+            <div className="sidebar-column">
+                <label>Main point of interrest</label>
+                <div className="sidebar-row">
+                    <Field name="departure" className={'rounded-field' + (errors.departure && touched.departure ? ' invalid-field' : '')} onChange={e => { props.searchLocation(e.target.value); setFieldValue('departure', e.target.value); }}/>
+                </div>
+            </div>
+            <div className="sidebar-column">
+                <div className="sidebar-row center">
+                    Add a new point of interrest  &nbsp;<div className="icon-wrap pointer"><FontAwesomeIcon icon={icons.faPlus}/></div>
+                </div>
+            </div>
+            <div className="line bottomn" />
+            <div className="sidebar-column">
+                <div className="button standard white-bg" onClick={submitForm}>SAVE</div>
+            </div>
         </div>
     );
 };
