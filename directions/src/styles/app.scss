@@ -5,7 +5,9 @@ body {
         font-family: "Quicksand", sans-serif;
         outline: none;
     }
-
+    li {
+        list-style: none;
+    }
     a {
         text-decoration: none;
         &:visited {
@@ -18,13 +20,24 @@ body {
         }
     }
     // GOOGLE MAPS CLASSES______
-    .autocomplete-field {
+    #autocomplete-field {
         position: absolute;
+        z-index: 35;
+        left: 1%;
+        top: 1%;
+        height: 35px;
+        width: 335px;
+        padding: 15px;
+        color: grey;
+        border-radius: 15px;
     }
     .gmnoprint {
         display: none;
     }
     // COMMON CLASSES_______
+    .white-bg {
+        background: white;
+    }
     .pointer {
         cursor: pointer;
     }
@@ -38,12 +51,20 @@ body {
         justify-content: center !important;
         align-items: center;
     }
+    .username {
+        align-self: center;
+        color: #27ccc0;
+        font-weight: 600;
+        font-size: 1.1em;
+        padding: 5px;
+    }
     .button {
         padding: 10px;
         border: 1px solid;
         box-shadow: 2px 2px 1px;
         border-radius: 1px;
         color: black;
+        text-align: center;
 
         &:hover {
             background: #27ccc0;
@@ -56,6 +77,10 @@ body {
             width: 300px;
             padding: 20px;
         }
+        &.inactive {
+            background: grey;
+            color: rgb(68, 65, 65);
+        }
     }
     .icon-wrap {
         border: 1px solid;
@@ -66,6 +91,10 @@ body {
                 color: white;
             }
         }
+        &.inactive {
+            background: grey;
+            color: rgb(68, 65, 65);
+        }
     }
     .site-title {
         display: flex;
@@ -74,6 +103,15 @@ body {
         color: #6d6d6d;
         img {
             height: 150px;
+        }
+    }
+    .rounded-field {
+        flex: 0 1 80%;
+        border-radius: 10px;
+        padding: 1%;
+        &.invalid {
+            border-color: #9f3838;
+            background: rgba(255, 0, 0, 0.088);
         }
     }
     .footer {
@@ -104,6 +142,49 @@ body {
         color: white;
          background: #27ccc0;
     }
+    .slidecontainer {
+        width: 100%;
+        padding: 5% 0;
+        .slider {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 5px;
+        background: #e2fffd;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity .2s;
+        border: 1px solid grey;
+        border-radius: 10px;
+        padding: 1%;
+        &:hover {
+          opacity: 1; /* Fully shown on mouse-over */
+        }
+      
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none; /* Override default look */
+          appearance: none;
+          width: 25px; /* Set a specific slider handle width */
+          height: 25px; /* Slider handle height */
+          background: black; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+          border-radius: 50px;
+        }
+        &::-moz-range-thumb {
+          width: 25px; /* Set a specific slider handle width */
+          height: 25px; /* Slider handle height */
+          background: black; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+          border-radius: 50px;
+
+        }
+      }
+    }
+      
+      /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+      
+    //______________
     #root {
         position: absolute;
         width: 100%;
@@ -166,25 +247,33 @@ body {
                     position: absolute;
                     z-index: 20;
                     background: white;
-                    height: 95%;
-                    border: 2px solid;
-                    padding: 15px;
+                    height: 85%;
+                    border-top: none;
+                    padding: 15px 0;
                     text-align: left;
+                    top: 10%;
                     animation: slideDown .5s linear;
+                    width: 365px;
+                    left: 1%;
+                    background: transparent;
                     &.collapsed {
                         height: 0;
                         border: none;
                         background: transparent;
                         // top: 20%;
-                        left: 0;
+                        // left: 0;
                         transition: none;
                     }
                     .controls-row {
                         display: flex;
                         justify-content: space-between;
-                        padding: 1% 0 5% 0;
-                        flex: 1;
-
+                        padding: 3% 1%;
+                        flex: 1 1;
+                        flex-wrap: wrap;
+                        background: white;
+                        border-radius: 10px;
+                        border: 1px solid;
+                        margin: 1% 0;
                     }
                     .sidebar-column {
                         display: flex;
@@ -204,8 +293,6 @@ body {
                             margin-bottom: 15px;
                             .rounded-field {
                                 flex: 0 1 80%;
-                                border-radius: 10px;
-                                padding: 1%;
                             }
                         }
                     }
@@ -223,7 +310,7 @@ body {
                 .section-lane {
                     display: flex;
                     flex: auto;
-                    padding: 15px 0;
+                    padding: 15px;
                     &.small {
                         flex: 0 0 10%;
                     }
