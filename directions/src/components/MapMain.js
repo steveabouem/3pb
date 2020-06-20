@@ -71,7 +71,7 @@ export const MapMain = () => {
                         </React.Fragment>
                       </Autocomplete>
                     </GoogleMap>
-                    <GoogleMap>
+                    {/* <GoogleMap>
                        <DrawingManager 
                             options={{
                               drawingMode: mapData.drawingMode,
@@ -85,8 +85,8 @@ export const MapMain = () => {
                             }}
                             onPolylineComplete={polyline => setMapData({...mapData, polyline})}
                         />
-                    </GoogleMap>
-                    </React.Fragment>
+                    </GoogleMap> */}
+                  </React.Fragment>
                 )}
               </div>
             </div>
