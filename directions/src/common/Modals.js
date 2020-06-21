@@ -10,8 +10,8 @@ export const Modal = ({modalType, cancel, confirm}) => (
                 }
             </div>
             <div className="buttons">
-                <div className="button small" onClick={cancel}>ANNULER</div>
-                {modalType !== 'error' && <div className="button small" onClick={confirm}>CONFIRMER</div>}
+                <div className="button small" onClick={cancel}>{modalType === 'confirm' ? 'ANNULER' : 'FERMER'}</div>
+                {modalType === 'confirm' && <div className="button small" onClick={confirm}>CONFIRMER</div>}
             </div>
         </div>
     </div>

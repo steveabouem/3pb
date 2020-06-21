@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplete, Polyline, Data } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DrawingManager, Autocomplete, Polyline } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -12,7 +12,7 @@ export const MapMain = () => {
   const [loading, setLoading] = useState(true);
   const [mapData, setMapData] = useState({ center: {lat: 5.30966, lng: -4.01266}, zoom: 13, drawingMode: null, darkMode: false});
   const [placesData, setPlacesData] = useState({});
-  const [modalType, setModalType] = useState(null);
+  const [modal, setModal] = useState({opened: false, type: ''});
 
   const validations = Yup.object().shape({
     step1: Yup.string().required().min(4)
@@ -36,11 +36,11 @@ export const MapMain = () => {
     createMap(mapData)
       .then(res => {
         setLoading(false);
-        setModalType('success');
+        setModal({opened: true, type:'success'});
       })
       .catch(e => {
         setLoading(false);
-        setModalType('error');
+        setModal({opened: true, type:'error'});
       });
   };
 
@@ -48,7 +48,7 @@ export const MapMain = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={validations}
-      onSubmit={() => setModalType('confirm')}
+      onSubmit={() => setModal({opened: true, type:'confirm'})}
     >
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
         <MapsContext.Provider value={{ mapData, setMapData }}>
@@ -58,15 +58,15 @@ export const MapMain = () => {
             libraries={config.libraries}
             onLoad={() => setLoading(false)}
           >
-            <div className="section-wrap inline" style={{ flex: '0 1 85%', position: 'relative' }}>
-              <MapSidebar searchLocation={searchLocation} share={shareLink} />
+            <div className="section-wrap inline" style={{flex: '0 1 85%', position: 'relative'}}>
+              <MapSidebar searchLocation={searchLocation} share={shareLink} submit={() => setModal({opened: true, type:'confirm'})}/>
               <div className="map-wrap">
                 {loading ? (
                   <Loader />
                 ) : (
                   <React.Fragment>
-                    {modalType && (
-                      <Modal modalType={modalType} cancel={() =>setModalType(null)} confirm={submit}/>
+                    {modal && modal.opened && (
+                      <Modal modalType={modal?.type} cancel={() =>setModal({opened: false, type: 'confirm'})} confirm={submit}/>
                     )}
                     <GoogleMap
                       mapContainerStyle={{'height': '70px', 'width': '370px', 'position': 'absolute', 'left': '1%', 'top': '1%'}}

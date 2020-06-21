@@ -18,10 +18,23 @@ export const MapSidebar = ({ ...props }) => {
                 <div className="controls-row-label" >
                     <label>CONTROLES</label>
                 </div>
-                <FontAwesomeIcon icon={icons.faMapMarkedAlt} data-tip="" data-for="type-marker" className={'icon pointer' + (mapData.drawingMode === modes.marker ? ' active' : '')} onClick={() =>setMapData({...mapData, drawingMode: modes.marker})}/>
-                <FontAwesomeIcon icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (mapData.drawingMode === modes.polyline ? ' active' : '')} onClick={() =>setMapData({...mapData, drawingMode: modes.polyline})}/>
-                <FontAwesomeIcon icon={icons.faHandPointer} data-tip="" data-for="type-default" className={'icon pointer' + (!mapData.drawingMode ? ' active' : '')} onClick={() =>setMapData(null)}/>
-                <FontAwesomeIcon icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData.darkode ? ' active' : '')} onClick={() =>setMapData({...mapData, darkMode: !mapData.darkMode})}/>
+                <FontAwesomeIcon 
+                    icon={icons.faMapMarkedAlt} data-tip="" data-for="type-marker" 
+                    className={'icon pointer' + (mapData.drawingMode === modes.marker ? ' active' : '')} 
+                    onClick={() =>setMapData({...mapData, drawingMode: modes.marker})}
+                />
+                <FontAwesomeIcon 
+                    icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (mapData.drawingMode === modes.polyline ? ' active' : '')}
+                    onClick={() =>setMapData({...mapData, drawingMode: modes.polyline})}
+                />
+                <FontAwesomeIcon 
+                    icon={icons.faHandPointer} data-tip="" data-for="type-default" 
+                    className={'icon pointer' + (!mapData.drawingMode ? ' active' : '')} onClick={() =>setMapData(null)}
+                />
+                <FontAwesomeIcon 
+                    icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData.darkode ? ' active' : '')} 
+                    onClick={() =>setMapData({...mapData, darkMode: !mapData.darkMode})}
+                />
                 <Slider min="1" max="20" val="12" tip="Zoom"/>
 
                 <ReactTooltip className="tooltip" id="type-marker">{ mapData.drawingMode === modes.marker ? 'Mode marqueur' : 'Ajouter un marqueur'}</ReactTooltip>
@@ -39,10 +52,13 @@ export const MapSidebar = ({ ...props }) => {
                 </div>
                 <label>Choisir une destination</label>
                 <div className="sidebar-row">
-                    <Field name="destination" className={'rounded-field' + (errors.destination && touched.destination ? ' invalid-field' : '')} onChange={e => { props.searchLocation(e.target.value); setFieldValue('destination', e.target.value); }}/>
+                    <Field 
+                        name="destination" className={'rounded-field' + (errors.destination && touched.destination ? ' invalid-field' : '')} 
+                        onChange={e => { props.searchLocation(e.target.value); setFieldValue('destination', e.target.value); }}
+                    />
                 </div>
             </div>
-            <div className="button standard white-bg" onClick={submitForm}>SAUVEGARDER</div>
+            <div className="button standard white-bg" onClick={props.submit}>SAUVEGARDER</div>
         </div>
     );
 };
