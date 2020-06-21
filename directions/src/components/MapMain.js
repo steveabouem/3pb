@@ -5,11 +5,14 @@ import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { MapSidebar } from './MapSidebar';
 import { MapsContext } from '../helpers/contexts';
+import { createMap } from '../helpers/api';
+import { Modal } from '../common/Modals';
 
 export const MapMain = () => {
   const [loading, setLoading] = useState(true);
   const [mapData, setMapData] = useState({ center: {lat: 5.30966, lng: -4.01266}, zoom: 13, drawingMode: null, darkMode: false});
   const [placesData, setPlacesData] = useState({});
+  const [modalType, setModalType] = useState(null);
 
   const validations = Yup.object().shape({
     step1: Yup.string().required().min(4)
@@ -28,18 +31,24 @@ export const MapMain = () => {
   const shareLink = () => {
   };
 
-  const submit = (values, actions) => {
-    console.log({ values, actions });
-
+  const submit = () => {
+    setLoading(true);
+    createMap(mapData)
+      .then(res => {
+        setLoading(false);
+        setModalType('success');
+      })
+      .catch(e => {
+        setLoading(false);
+        setModalType('error');
+      });
   };
-
-
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validations}
-      onSubmit={submit}
+      onSubmit={() => setModalType('confirm')}
     >
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
         <MapsContext.Provider value={{ mapData, setMapData }}>
@@ -56,6 +65,9 @@ export const MapMain = () => {
                   <Loader />
                 ) : (
                   <React.Fragment>
+                    {modalType && (
+                      <Modal modalType={modalType} cancel={() =>setModalType(null)} confirm={submit}/>
+                    )}
                     <GoogleMap
                       mapContainerStyle={{'height': '70px', 'width': '370px', 'position': 'absolute', 'left': '1%', 'top': '1%'}}
                       center={mapData.center}

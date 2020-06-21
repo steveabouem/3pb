@@ -41,6 +41,37 @@ body {
             margin: auto;
         }
     }
+    .modal-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: #ffffff83;
+        z-index: 40;
+        .modal {
+            padding: 15px;
+            margin: auto;
+            margin-top: 10%;
+            width: 33%;
+            height: 33%;
+            border: 1px solid grey;
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;;
+            .title {
+                font-size: 1.2em;
+                font-weight: 600;
+                text-align: center;
+            }
+            .buttons {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
     .white-bg {
         background: white;
     }
@@ -261,7 +292,7 @@ body {
                     border-top: none;
                     padding: 15px 0;
                     text-align: left;
-                    top: 10%;
+                    top: 12%;
                     animation: slideDown .5s linear;
                     width: 365px;
                     left: 1%;

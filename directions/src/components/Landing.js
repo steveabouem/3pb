@@ -52,7 +52,7 @@ export const Landing = () => {
                     </MapStep>
                 </div>
                 <div className="section-lane center">
-                    <Link to={clientRoutes.mapMain}><div className="button large">CREATE YOUR MAP ADDRESS</div></Link>
+                    <Link to={clientRoutes.mapMain}><div className="button large">CRÉER VOTRE CARTE</div></Link>
                     {/* <Link to={user ? clientRoutes.mapMain : clientRoutes.signin}><div className="button large">CREATE YOUR MAP ADDRESS</div></Link> */}
                 </div>
             </div>
