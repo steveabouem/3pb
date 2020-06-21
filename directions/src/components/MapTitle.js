@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useFormikContext, Field } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icons } from '../common/icons';
 import ReactTooltip from 'react-tooltip';
+import { MapsContext } from '../helpers/contexts';
 
-export const MapTitle = ({ title, save }) => {
-    const { values, errors, touched } = useFormikContext();
+export const MapTitle = ({save}) => {
+    const {values, errors, touched} = useFormikContext();
+    const {mapData, setMapData} =useContext(MapsContext);
     const [active, setActive] = useState(true);
     
     const toggleTitle = () => {
+        if (active) {
+            setMapData({...mapData, title: values.mapTitle});
+        }
         setActive(!active);
     };
 

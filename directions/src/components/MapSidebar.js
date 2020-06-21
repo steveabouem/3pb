@@ -9,7 +9,7 @@ import { modes } from './MapMain';
 import { Slider } from '../common/Slider';
 
 export const MapSidebar = ({ ...props }) => {
-    const { values, errors, touched, setFieldValue, submitForm } = useFormikContext();
+    const { values, errors, touched, setFieldValue } = useFormikContext();
     const { setMapData, mapData } = useContext(MapsContext);
     
     return (

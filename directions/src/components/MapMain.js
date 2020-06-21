@@ -39,6 +39,8 @@ export const MapMain = () => {
         setModal({opened: true, type:'success'});
       })
       .catch(e => {
+        console.log({e});
+        
         setLoading(false);
         setModal({opened: true, type:'error'});
       });
