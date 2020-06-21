@@ -35,6 +35,12 @@ body {
         display: none;
     }
     // COMMON CLASSES_______
+    .not-found {
+        .button {
+            width: 20%;
+            margin: auto;
+        }
+    }
     .white-bg {
         background: white;
     }
