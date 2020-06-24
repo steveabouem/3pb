@@ -25,7 +25,7 @@ export const MapTitle = ({save}) => {
         </React.Fragment>
     ) : (
         <React.Fragment>
-            {values?.mapTitle}
+            <label className="strong between flex black">{values?.mapTitle}</label>
             <FontAwesomeIcon className="icon pointer" onClick={toggleTitle} icon={icons.faPencilAlt} data-tip="" data-for="edit-title"/>
             <ReactTooltip className="tooltip"  id="edit-title" textColor="white" backgroundColor="#27ccc0">Confirmer</ReactTooltip>
         </React.Fragment>

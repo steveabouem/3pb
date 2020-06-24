@@ -12,6 +12,7 @@ export const MapMain = () => {
   const [loading, setLoading] = useState(true);
   const [mapData, setMapData] = useState({ center: {lat: 5.30966, lng: -4.01266}, zoom: 13, drawingMode: null, darkMode: false});
   const [placesData, setPlacesData] = useState({});
+  const [polyData, setPolyData] = useState(null);
   const [modal, setModal] = useState({opened: false, type: ''});
 
   const validations = Yup.object().shape({
@@ -33,19 +34,27 @@ export const MapMain = () => {
 
   const submit = () => {
     setLoading(true);
+    
     createMap(mapData)
-      .then(res => {
-        setLoading(false);
-        setModal({opened: true, type:'success'});
-      })
-      .catch(e => {
-        console.log({e});
-        
-        setLoading(false);
-        setModal({opened: true, type:'error'});
-      });
+    .then(res => {
+      setLoading(false);
+      setModal({opened: true, type:'success'});
+    })
+    .catch(e => {
+      console.log({e});
+      
+      setLoading(false);
+      setModal({opened: true, type:'error'});
+    });
   };
-
+  
+  // if (polyData) {
+  //   const poly = polyData.getPath();
+  //   console.log({poly});
+  // } else {
+  //   console.log('no poly yet');
+    
+  // }
   return (
     <Formik
       initialValues={initialValues}
@@ -102,7 +111,7 @@ export const MapMain = () => {
                                 strokeWeight: 5
                               }
                             }}
-                            onPolylineComplete={polyline => setMapData({...mapData, polyline})}
+                            onPolylineComplete={polyline => setPolyData(polyline)}
                         />
                     </GoogleMap>
                   </React.Fragment>

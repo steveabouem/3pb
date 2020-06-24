@@ -50,7 +50,7 @@ export const Authentication = () => {
     };
 
     return (
-        <div className="section-wrap">
+        <div className="section-wrap flex reveal">
             {loading ? (
                 <Loader/>
             ) : (
@@ -64,31 +64,37 @@ export const Authentication = () => {
                     validationSchema={valiations}
                 >
                     {({ touched, errors, values, submitForm, isValid, isSubmitting, resetForm }) => (
-                        <div className="section-wrap center">
-                            <div className="section-lane">
-                                <label>Email</label>
-                            </div>
-                            <div className="section-lane">
-                                <Field name="email" className={'rounded-field' + (errors.email && touched.email ? ' invalid' : '')} />
-                            </div>
-                            <div className="section-lane">
-                                <label>Password</label>
-                            </div>
-                            <div className="section-lane">
-                                <Field name="password" type="password" className={'rounded-field' + (errors.password && touched.password ? ' invalid' : '')} />
-                            </div>
-                            {!isSigningIn && (
-                                <React.Fragment>
-                                    <div className="section-lane">
-                                        <label>Confirm password</label>
-                                    </div>
-                                    <div className="section-lane">
-                                        <Field name="conf_password" type="password" className={'rounded-field' + (errors.conf_password && touched.conf_password ? ' invalid' : '')} />
-                                    </div>
-                                </React.Fragment>
-                            )}
-                            <div className="section-lane">
-                                <FontAwesomeIcon className={'icon' + (!isValid ? ' inactive' : ' pointer')} icon={icons.faPlay} onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}/>
+                        <div className="section-wrap center flex gradient reveal">
+                            <div className="bg-overlay"/>
+                            <div className="form-bg column white-bg">
+                                <div className="curved-bg-element top"/>
+                                <div className="curved-bg-element middle"/>
+                                <div className="curved-bg-element bottom"/>
+                                <div className="section-lane over">
+                                    <label className="strong">Email</label>
+                                </div>
+                                <div className="section-lane over">
+                                    <Field name="email" className={'rounded-field' + (errors.email && touched.email ? ' invalid' : '')} />
+                                </div>
+                                <div className="section-lane over">
+                                    <label className="strong">Mot de passe</label>
+                                </div>
+                                <div className="section-lane over">
+                                    <Field name="password" type="password" className={'rounded-field' + (errors.password && touched.password ? ' invalid' : '')} />
+                                </div>
+                                {!isSigningIn && (
+                                    <React.Fragment>
+                                        <div className="section-lane over">
+                                            <label className="strong">Confirmer mot de passe</label>
+                                        </div>
+                                        <div className="section-lane over">
+                                            <Field name="conf_password" type="password" className={'rounded-field' + (errors.conf_password && touched.conf_password ? ' invalid' : '')} />
+                                        </div>
+                                    </React.Fragment>
+                                )}
+                                <div className="section-lane over">
+                                    <FontAwesomeIcon className={'icon' + (!isValid ? ' inactive' : ' pointer')} icon={icons.faPlay} onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}/>
+                                </div>
                             </div>
                         </div>
                     )}
