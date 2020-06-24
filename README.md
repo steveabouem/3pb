@@ -12,7 +12,11 @@ cd directions
 ```
 npm i
 ```
-4. **Start the development server**
+4. **Install all cloud functions dependencies**
+```
+cd functions && npm i
+```
+5. **Start the development server**
 ```
 npm start
 ```

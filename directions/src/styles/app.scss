@@ -1,42 +1,75 @@
 body {
     margin: 0;
     * {
-        transition: .2s;
-        font-family: 'Quicksand', sans-serif;
-        outline: none
+        transition: 0.3s;
+        font-family: "Quicksand", sans-serif;
+        outline: none;
     }
-
+    li {
+        list-style: none;
+    }
     a {
         text-decoration: none;
         &:visited {
             color: black;
         }
+        &:hover {
+            .button {
+                color: white;
+            }
+        }
+    }
+    // GOOGLE MAPS CLASSES______
+    #autocomplete-field {
+        position: absolute;
+        z-index: 35;
+        left: 1%;
+        top: 1%;
+        height: 35px;
+        width: 335px;
+        padding: 15px;
+        color: grey;
+        border-radius: 15px;
+    }
+    .gmnoprint {
+        display: none;
     }
     // COMMON CLASSES_______
+    .white-bg {
+        background: white;
+    }
     .pointer {
         cursor: pointer;
     }
     .inline {
-        flex-direction: row!important;
+        flex-direction: row !important;
     }
     .between {
-        justify-content: space-between!important;
+        justify-content: space-between !important;
     }
     .center {
-        justify-content: center!important;
+        justify-content: center !important;
         align-items: center;
+    }
+    .username {
+        align-self: center;
+        color: #27ccc0;
+        font-weight: 600;
+        font-size: 1.1em;
+        padding: 5px;
     }
     .button {
         padding: 10px;
         border: 1px solid;
         box-shadow: 2px 2px 1px;
         border-radius: 1px;
+        color: black;
+        text-align: center;
 
         &:hover {
-            color: white;
-            background: black;
+            background: #27ccc0;
         }
-        
+
         &.standard {
             // width: ;
         }
@@ -44,24 +77,46 @@ body {
             width: 300px;
             padding: 20px;
         }
+        &.inactive {
+            background: grey;
+            color: rgb(68, 65, 65);
+        }
     }
     .icon-wrap {
         border: 1px solid;
         padding: 1px 1px;
         &.pointer {
             &:hover {
-                background: black;
+                background: #27ccc0; //$green
                 color: white;
             }
         }
+        &.inactive {
+            background: grey;
+            color: rgb(68, 65, 65);
+        }
     }
     .site-title {
-        font-size: 3em;
-        font-weight: 700;
+        display: flex;
+        align-items: center;
+        font-size: 2em;
+        color: #6d6d6d;
+        img {
+            height: 150px;
+        }
+    }
+    .rounded-field {
+        flex: 0 1 80%;
+        border-radius: 10px;
+        padding: 1%;
+        &.invalid {
+            border-color: #9f3838;
+            background: rgba(255, 0, 0, 0.088);
+        }
     }
     .footer {
         background: black;
-        height: 50px;
+        height: 5%;
         position: fixed;
         bottom: 0;
         width: 100%;
@@ -73,7 +128,63 @@ body {
         top: 50%;
         left: 45%;
     }
+    .icon {
+        &.pointer {
+            &:hover, &.active {
+                color: #27ccc0;
+                transform: scale(1.1);
+                transition: .3s;
+            }
+        }
+    }
+    .tooltip {
+        z-index: 30;
+        color: white;
+         background: #27ccc0;
+    }
+    .slidecontainer {
+        width: 100%;
+        padding: 5% 0;
+        .slider {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 5px;
+        background: #e2fffd;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity .2s;
+        border: 1px solid grey;
+        border-radius: 10px;
+        padding: 1%;
+        &:hover {
+          opacity: 1; /* Fully shown on mouse-over */
+        }
+      
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none; /* Override default look */
+          appearance: none;
+          width: 25px; /* Set a specific slider handle width */
+          height: 25px; /* Slider handle height */
+          background: black; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+          border-radius: 50px;
+        }
+        &::-moz-range-thumb {
+          width: 25px; /* Set a specific slider handle width */
+          height: 25px; /* Slider handle height */
+          background: black; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+          border-radius: 50px;
 
+        }
+      }
+    }
+      
+      /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+      
+    //______________
     #root {
         position: absolute;
         width: 100%;
@@ -93,41 +204,77 @@ body {
                 width: 100%;
                 height: 10%;
                 background: transparent;
-                display: inline-flex;
+                display: flex;
                 justify-content: space-between;
-        
+
                 .nav-inner {
                     display: inline-flex;
                     width: 100%;
                     justify-content: flex-end;
                     padding: 1% 0;
-        
+
                     .nav-section {
                         flex: 0 1 20%;
                         display: inline-flex;
                         justify-content: space-evenly;
+
+                        &.flex {
+                            flex: 1;
+                            &.start {
+                                justify-content: start;
+                                align-items: center;
+                                padding: 0 1%;
+                                &:hover {
+                                    img {
+                                        transform: scale(1.1);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-            
+
             .section-wrap {
                 display: flex;
                 width: auto;
                 height: auto;
-                animation: reveal .5s linear;
+                animation: reveal 0.5s linear;
                 flex-direction: column;
                 justify-content: start;
-                margin: 15px;
-                
+
                 .sidebar {
-                    display: flex;
-                    flex-direction: column;
-                    border: 2px solid;
-                    justify-content: flex-start;
-                    padding: 15px;
+                    position: absolute;
+                    z-index: 20;
+                    background: white;
+                    height: 85%;
+                    border-top: none;
+                    padding: 15px 0;
                     text-align: left;
-                    // &.left {
-                    // }
+                    top: 10%;
+                    animation: slideDown .5s linear;
+                    width: 365px;
+                    left: 1%;
+                    background: transparent;
+                    &.collapsed {
+                        height: 0;
+                        border: none;
+                        background: transparent;
+                        // top: 20%;
+                        // left: 0;
+                        transition: none;
+                    }
+                    .controls-row {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 3% 1%;
+                        flex: 1 1;
+                        flex-wrap: wrap;
+                        background: white;
+                        border-radius: 10px;
+                        border: 1px solid;
+                        margin: 1% 0;
+                    }
                     .sidebar-column {
                         display: flex;
                         flex-direction: column;
@@ -135,7 +282,7 @@ body {
                         flex: 0 1 auto;
 
                         label {
-                            color: #686868;//$dark-grey
+                            color: #686868; //$dark-grey
                             font-size: 1.1em;
                             font-weight: 500;
                             padding: 0 0 10px 0;
@@ -146,9 +293,7 @@ body {
                             margin-bottom: 15px;
                             .rounded-field {
                                 flex: 0 1 80%;
-                                border-radius: 10px;
                             }
-
                         }
                     }
                 }
@@ -156,31 +301,18 @@ body {
                 .map-wrap {
                     display: flex;
                     flex-direction: column;
-                    flex: 42%;
+                    flex: 1;
+                    height: 100%;
                     align-items: center;
                     justify-content: space-between;
-
-                    .map-title {
-                        margin: 0 0 15px 10%;
-                        align-self: flex-start;
-                        display: flex;
-                        .title-field {
-                            border: none;
-                            font-size: 1.1em;
-                            align-self: start;
-                            &:focus {
-                                border-bottom: 1px solid;
-                            }
-                        }
-                    }
                 }
 
                 .section-lane {
                     display: flex;
                     flex: auto;
-                    padding: 15px 0;
+                    padding: 15px;
                     &.small {
-                        flex:0 0 10%;
+                        flex: 0 0 10%;
                     }
 
                     .step-box {
@@ -192,6 +324,7 @@ body {
                         padding: 5px;
 
                         .title {
+                            color: #27ccc0;
                             text-align: left;
                             flex: 0 0 10%;
                             font-size: 1.1em;
@@ -201,7 +334,7 @@ body {
                         .body {
                             flex: 0 1 auto;
                         }
-                        .avatar { 
+                        .avatar {
                             flex: 20%;
                             display: flex;
                             justify-content: center;
@@ -210,21 +343,21 @@ body {
                     }
                 }
             }
-            
+
             .section-header {
                 display: flex;
                 height: 80px;
             }
-            
+
             .section-title {
                 text-align: center;
                 font-size: 14px;
             }
-            
+
             .section-summary {
                 height: 150px;
             }
-            
+
             .section-main {
                 display: flex;
                 flex-direction: column;
@@ -252,4 +385,14 @@ body {
     to {
         transform: none;
     }
-}    
+}
+
+@keyframes slideDown {
+    from {
+        height: 0;
+    }
+
+    to {
+        height: 78%;
+    }
+}
