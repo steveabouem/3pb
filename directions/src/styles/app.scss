@@ -41,6 +41,10 @@ body {
             margin: auto;
         }
     }
+    .version {
+        text-align: right;
+        padding: 15px;
+    }
     .over {
         z-index: 40;
     }
@@ -228,6 +232,8 @@ body {
         background: black;
         height: 5%;
         position: fixed;
+        display: flex;
+        align-items: center;
         bottom: 0;
         width: 100%;
         color: white;

@@ -26,7 +26,7 @@ const App = () => {
 				</Switch>
 			</FirebaseProvider>
 			<div className="footer">
-				<div className="version">V 0.1.1</div>
+				<div className="version flex">V 0.1.1</div>
 			</div>
 		</div>
 	);
