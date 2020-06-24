@@ -176,6 +176,7 @@ body {
 
         &:hover {
             background: #27ccc0;
+            color: white;
         }
 
         &.standard {
@@ -210,6 +211,7 @@ body {
         font-size: 2em;
         color: #6d6d6d;
         img {
+            border-radius: 70px;
             height: 150px;
         }
     }

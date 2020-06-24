@@ -25,7 +25,9 @@ const App = () => {
 					</Route>
 				</Switch>
 			</FirebaseProvider>
-			<div className="footer"/>
+			<div className="footer">
+				<div className="version">V 0.1.1</div>
+			</div>
 		</div>
 	);
 }
