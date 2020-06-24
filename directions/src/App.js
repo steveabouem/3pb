@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './styles/app.scss';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { clientRoutes } from './helpers/routes';
+import { Switch, Route } from 'react-router-dom';
 import { Landing } from './components/Landing';
 import { MapMain } from './components/MapMain';
 import { Nav } from './components/Nav';
-import { UserContext } from './helpers/contexts';
+// import { UserContext } from './helpers/contexts';
 import { FirebaseProvider } from './components/FirbaseProvider';
 import { Authentication } from './components/Authenticattion';
+import { NotFound } from './components/404';
 
 
 const App = () => {
@@ -20,12 +20,14 @@ const App = () => {
 					<Route path="/map" component={MapMain}/>
 					<Route path="/signin" component={Authentication}/>
 					<Route path="/signup" component={Authentication}/>
-					<Route path="*">
-						none
+					<Route exact path="*">
+						<NotFound/>
 					</Route>
 				</Switch>
 			</FirebaseProvider>
-			<div className="footer"/>
+			<div className="footer">
+				<div className="version flex">V 0.1.1</div>
+			</div>
 		</div>
 	);
 }

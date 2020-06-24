@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GoogleMap, LoadScript, DrawingManager, StandaloneSearchBox, Autocomplete, Polyline, Data } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DrawingManager, Autocomplete, Polyline } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { MapSidebar } from './MapSidebar';
 import { MapsContext } from '../helpers/contexts';
+import { createMap } from '../helpers/api';
+import { Modal } from '../common/Modals';
 
 export const MapMain = () => {
   const [loading, setLoading] = useState(true);
-  const [origin, setOrigin] = useState({ lat: 5.30966, lng: -4.01266 });
-  const [destination, setDestination] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-  const [title, setTitle] = useState(null);
-  const [zoom, setZoom] = useState(12);
-  const [drawingMode, setDrawingMode] = useState(null);
+  const [mapData, setMapData] = useState({ center: {lat: 5.30966, lng: -4.01266}, zoom: 13, drawingMode: null, darkMode: false});
   const [placesData, setPlacesData] = useState({});
+  const [polyData, setPolyData] = useState(null);
+  const [modal, setModal] = useState({opened: false, type: ''});
 
   const validations = Yup.object().shape({
     step1: Yup.string().required().min(4)
@@ -27,59 +26,83 @@ export const MapMain = () => {
 
   const searchLocation = () => {
     let result = placesData?.getPlace().geometry.location;
-    setOrigin({lat: result.lat() , lng: result.lng()});
+    setMapData({...mapData, center: {lat: result.lat() , lng: result.lng()}});
   };
 
   const shareLink = () => {
   };
 
-  const submit = (values, actions) => {
-    console.log({ values, actions });
-
+  const submit = () => {
+    setLoading(true);
+    
+    createMap(mapData)
+    .then(res => {
+      setLoading(false);
+      setModal({opened: true, type:'success'});
+    })
+    .catch(e => {
+      console.log({e});
+      
+      setLoading(false);
+      setModal({opened: true, type:'error'});
+    });
   };
-
-
-
+  
+  // if (polyData) {
+  //   const poly = polyData.getPath();
+  //   console.log({poly});
+  // } else {
+  //   console.log('no poly yet');
+    
+  // }
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validations}
-      onSubmit={submit}
+      onSubmit={() => setModal({opened: true, type:'confirm'})}
     >
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-        <MapsContext.Provider value={{ drawingMode, setDrawingMode, darkMode, setDarkMode, destination, setDestination, zoom, setZoom }}>
+        <MapsContext.Provider value={{ mapData, setMapData }}>
           <LoadScript
             googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
             loadingElement={Loader}
             libraries={config.libraries}
             onLoad={() => setLoading(false)}
           >
-            <div className="section-wrap inline" style={{ flex: '0 1 85%', position: 'relative' }}>
-              <MapSidebar searchLocation={searchLocation} share={shareLink} />
+            <div className="section-wrap inline" style={{flex: '0 1 85%', position: 'relative'}}>
+              <MapSidebar searchLocation={searchLocation} share={shareLink} submit={() => setModal({opened: true, type:'confirm'})}/>
               <div className="map-wrap">
                 {loading ? (
                   <Loader />
                 ) : (
                   <React.Fragment>
+                    {modal && modal.opened && (
+                      <Modal modalType={modal?.type} cancel={() =>setModal({opened: false, type: 'confirm'})} confirm={submit}/>
+                    )}
                     <GoogleMap
-                      mapContainerStyle={config.style}
-                      center={origin}
-                      zoom={zoom}
-                      options={{ styles: darkMode ? mapOptions : null }}
+                      mapContainerStyle={{'height': '70px', 'width': '370px', 'position': 'absolute', 'left': '1%', 'top': '1%'}}
+                      center={mapData.center}
+                      zoom={mapData.zoom}
+                      options={{ styles: mapData.darkMode ? mapOptions : null }}
                     >
                       <Autocomplete 
                         onLoad={ac => setPlacesData(ac)}
                         onPlaceChanged={searchLocation}
                       >
                         <React.Fragment>
-                          <Field value={values?.stop1} id="autocomplete-field"/>
+                          <Field value={values?.stop1} id="autocomplete-field" placeholder="Chercher un point de départ"/>
                         </React.Fragment>
                       </Autocomplete>
                     </GoogleMap>
-                    {/* <GoogleMap>
+                    <GoogleMap
+                       mapContainerStyle={config.style}
+                       center={mapData.center}
+                       zoom={mapData.zoom}
+                       options={{ styles: mapData.darkMode ? mapOptions : null }}
+                    >
                        <DrawingManager 
                             options={{
-                              drawingMode,
+                              drawingMode: mapData.drawingMode,
                               polylineOptions: {
                                 controls: ['Point', 'LineString', 'Polygon'],
                                 fillColor: "red",
@@ -88,10 +111,10 @@ export const MapMain = () => {
                                 strokeWeight: 5
                               }
                             }}
-                            onPolylineComplete={polyline => setMapData({...mapData, polyline})}
+                            onPolylineComplete={polyline => setPolyData(polyline)}
                         />
-                    </GoogleMap> */}
-                    </React.Fragment>
+                    </GoogleMap>
+                  </React.Fragment>
                 )}
               </div>
             </div>

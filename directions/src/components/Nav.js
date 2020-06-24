@@ -29,7 +29,7 @@ export const Nav = () => {
             <div className="nav-inner">
                 {location.pathname !== clientRoutes.home ? (
                     <div className="nav-section flex start">
-                         <Link to={clientRoutes.home} activeClassName="active">
+                         <Link to={clientRoutes.home}>
                             {/* <div className="button standard"> */}
                                 {/* <FontAwesomeIcon className="icon pointer" icon={icons.faArrowLeft}/> */}
                                 <img src={logo} alt={logo} height="50px"/>
@@ -45,10 +45,10 @@ export const Nav = () => {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            <Link to={clientRoutes.signin} activeClassName="active">
+                            <Link to={clientRoutes.signin}>
                                 <div className="button standard">Signin</div>
                             </Link>
-                            <Link to={clientRoutes.signup} activeClassName="active">
+                            <Link to={clientRoutes.signup}>
                                 <div className="button standard">Signup</div>
                             </Link>
                         </React.Fragment>
