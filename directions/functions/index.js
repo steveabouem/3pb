@@ -53,58 +53,21 @@ exports.getUser = functions.https.onRequest((req, res) => {
     });
 
 });
-
+// delete
 exports.deleteUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const {email} = req.body;
         users.doc(email).get().then(function(doc) {
             if (doc.exists) {
-               // 
+               
             } 
         }).catch(function(error) {
             res.send({code: 500, data: error});
         });
     });
 
-    });
-});
-// TODO: handles password and sessions with custom tokens: https://firebase.google.com/docs/auth/admin/verify-id-tokens
-exports.createUser = functions.https.onRequest((req, res) => {
-    cors(req, res, () => {
-        const {email, password} = req.body;
-        const id = uuidv4();
-
-        users.doc(id).set({email,  created: moment(), maps: null, imageUrl: null, id})
-        .then(() => {
-            users.doc(id).get().then(function(doc) {
-                if (doc.exists) {
-                    res.send(doc.data());
-                } else {
-                    res.send('None found');
-                }
-            }).catch(function(error) {
-                res.send('Error', error);
-            });
-        })
-    });
-
 });
 
-exports.getUser = functions.https.onRequest((req, res) => {
-    cors(req, res, () => {
-        const {email} = req.body;
-        users.doc(email).get().then(function(doc) {
-            if (doc.exists) {
-                res.send({code: 200, data: doc.data()});
-            } else {
-                res.send({code: 200, data: null});
-            }
-        }).catch(function(error) {
-            res.send({code: 500, data: error});
-        });
-    });
-
-});
 
 // cette fonction attend les arguments suivants: 
 // {
@@ -120,13 +83,14 @@ exports.getUser = functions.https.onRequest((req, res) => {
 exports.createMap = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const id = uuidv4();
-        
-        maps.doc(id).set({...req.body, created: moment(), id})
+        //dataUser_id = users.doc(user_ID).get();
+        maps.doc(id).set({...req.body, created: moment(), id, user_id = null})
             .then(() => {
                 maps.doc(id).get()
                     .then(doc => {
                         if (doc.exists) {
-                            res.send({code: 200, data: doc.data()});
+                            //dataUser_id.push();
+                            res.send({code: 200, data: doc.data()});                            
                         } else {
                             res.send({code: 400, data: null});
                         }
@@ -135,6 +99,26 @@ exports.createMap = functions.https.onRequest((req, res) => {
             .catch(e => {
                 res.send({code: 500, data: e});
             });
+    });
+});
+
+exports.assignMap = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        dataUser_id = users.doc(user_ID).get().push();
+        maps.doc(id).get({...req.body, created: moment(), id, user_id = null})
+            .then(() => {
+            maps.doc(id).set(user_id = dataUser_id)
+                .then(doc => {
+                    if (doc.exists){
+                        res.send({code: 200, data: doc.data()});
+                    }else{
+                        res.send({code: 400, data: null});
+                    }
+                })
+            }).catch(e => {
+                res.send({code: 500, data: e});
+            });   
+    
     });
 });
 
