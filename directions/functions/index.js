@@ -124,6 +124,22 @@ exports.assignMap = functions.https.onRequest((req, res) => {
     });
 });
 
+exports.getMap = functions.https.onRequest((req,res) => {
+    cors(req, res, () => {
+        maps.doc(req.body.mapId).get()
+            .then(doc => {
+                if(doc.exists) {
+                    res.send({code: 200, data: doc.data()});
+                } else {
+                    res.send({code: 500, data: null});
+                }
+            })
+            .catch(e => {
+                res.send({code: 500, data: e});
+            });
+    });
+});
+
 // cette fonction attend les arguments suivants: 
 // {
 //     mapName: string, obligatoire

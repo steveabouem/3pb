@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { clientRoutes } from '../helpers/routes';
 import { Loader } from '../common/Loader';
@@ -9,18 +9,30 @@ import { UserContext } from '../helpers/contexts';
 
 
 export const Landing = () => {
-    // TODO: default to true
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(true);
+    const [scroll, setScroll] = useState(false);
 
     useEffect(() => {
         setLoading(false);
     }, []);
 
+    
+    const handleScroll = e => {
+        // TODO:  toggle sidebar here
+        // const tData =
+        // e.target.scrollHeight <= e.target.scrollTop + e.target.clientHeight;
+        // console.log("scrolling.....", divHeight, tData);
+    
+        // if (tData) {
+        //   fetchMoreListItems();
+        // }
+    };
+
     return loading ? (
         <Loader />
     ) : (
-            <div className="section-wrap gradient">
+            <div className={'section-wrap gradient overflow' + (scroll ? ' scrollbar' : '')} onScroll={handleScroll}>
                 <div className="section-lane">
                     <div className="site-title">
                         <img src={logo} alt={logo} align="textTop" />
@@ -41,10 +53,14 @@ export const Landing = () => {
                         Épingler l'emplacement sur la carte.
                         (Option pour sélectionner ou épingler un deuxième emplacement sur la carte).
                     </MapStep>
+                </div>
+                <div className="section-lane">
                     <MapStep title="Étape 2" icon={icons.faDraftingCompass} size="3x">
                         Sélectionnez l'outil de traçage (Add Image) pour commencer à dessiner la trajectoire. Commencer à dessiner à partir du premier point d'intérêt principal, jusqu’à la destination finale. 
                         Épingler l'emplacement de la destination finale sur la carte.
                     </MapStep>
+                </div>
+                <div className="section-lane">
                     <MapStep title="Étape 3" icon={icons.faKeyboard} size="3x">
                         Une fois que vous êtes satisfait de votre carte, n'oubliez pas d'ajouter un titre (Ex: Maison Celestin Koffi_Rivieria 2)
                         N’oubliez pas d'enregistrer votre carte (vous devrez vous connecter pour enregistrer votre carte)

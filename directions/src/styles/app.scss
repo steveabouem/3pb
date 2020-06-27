@@ -4,6 +4,37 @@ body {
         transition: 0.3s;
         font-family: "Quicksand", sans-serif;
         outline: none;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE 10+ */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: none !important;
+            background-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 3px !important;
+            background-color: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: transparent;
+        }
+        .on-scrollbar{
+            scrollbar-width: thin; /* Firefox */
+            -ms-overflow-style: none; /* IE 10+ */
+          }
+          
+          .on-scrollbar::-webkit-scrollbar-track {
+            -webkit-box-shadow: none !important;
+            background-color: transparent !important;
+          }
+          
+          .on-scrollbar::-webkit-scrollbar {
+            width: 6px !important;
+            background-color: transparent;
+          }
+          
+          .on-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #acacac;
+          }
     }
     li {
         list-style: none;
@@ -39,6 +70,12 @@ body {
         .button {
             width: 20%;
             margin: auto;
+        }
+    }
+    .overflow {
+        overflow-y: auto;
+        &.x {
+            overflow-x: auto;
         }
     }
     .version {

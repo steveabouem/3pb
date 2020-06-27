@@ -10,7 +10,7 @@ import { Modal } from '../common/Modals';
 
 export const MapMain = () => {
   const [loading, setLoading] = useState(true);
-  const [mapData, setMapData] = useState({ center: {lat: 5.30966, lng: -4.01266}, zoom: 13, drawingMode: null, darkMode: false});
+  const [mapData, setMapData] = useState({ center: {lat:  -19.00624281951321, lng: 146.1908406119171}, zoom: 13, drawingMode: null, darkMode: false});
   const [placesData, setPlacesData] = useState({});
   const [polyData, setPolyData] = useState(null);
   const [modal, setModal] = useState({opened: false, type: ''});
@@ -28,6 +28,10 @@ export const MapMain = () => {
     let result = placesData?.getPlace().geometry.location;
     setMapData({...mapData, center: {lat: result.lat() , lng: result.lng()}});
   };
+
+  const savePath = polyline => {
+    setMapData({...mapData, polylinePath: polyline.getPath()})
+  }
 
   const shareLink = () => {
   };
@@ -108,10 +112,21 @@ export const MapMain = () => {
                                 fillColor: "red",
                                 strokeColor: 'purple',
                                 strokeOpacity: 1,
-                                strokeWeight: 5
+                                strokeWeight: 5,
+                                path: 
+                                  [
+                                      {
+                                          "lat": -19.00624281951321,
+                                          "lng": 146.1908406119171
+                                      },
+                                      {
+                                          "lng": 146.18908108280334,
+                                          "lat": -19.005076263111306
+                                      }
+                                  ]
                               }
                             }}
-                            onPolylineComplete={polyline => setPolyData(polyline)}
+                            onPolylineComplete={savePath}
                         />
                     </GoogleMap>
                   </React.Fragment>
