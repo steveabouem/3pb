@@ -53,6 +53,21 @@ exports.getUser = functions.https.onRequest((req, res) => {
     });
 
 });
+// delete
+exports.deleteUser = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const {email} = req.body;
+        users.doc(email).get().then(function(doc) {
+            if (doc.exists) {
+               
+            } 
+        }).catch(function(error) {
+            res.send({code: 500, data: error});
+        });
+    });
+
+});
+
 
 // cette fonction attend les arguments suivants: 
 // {
@@ -68,13 +83,14 @@ exports.getUser = functions.https.onRequest((req, res) => {
 exports.createMap = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const id = uuidv4();
-        
+        //dataUser_id = users.doc(user_ID).get();
         maps.doc(id).set({...req.body, created: moment(), id})
             .then(() => {
                 maps.doc(id).get()
                     .then(doc => {
                         if (doc.exists) {
-                            res.send({code: 200, data: doc.data()});
+                            //dataUser_id.push();
+                            res.send({code: 200, data: doc.data()});                            
                         } else {
                             res.send({code: 400, data: null});
                         }
@@ -83,6 +99,28 @@ exports.createMap = functions.https.onRequest((req, res) => {
             .catch(e => {
                 res.send({code: 500, data: e});
             });
+    });
+});
+
+exports.assignMap = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const id = "841561645";
+        const dataUser_id = 'duydbzndddvzydu';
+
+        maps.doc(id).set({...req.body, created: moment(), id, user_id: dataUser_id})
+            .then(() => {
+            maps.doc(id).get()
+                .then(doc => {
+                    if (doc.exists){
+                        res.send({code: 200, data: doc.data()});    
+                    }else{
+                        res.send({code: 400, data: null});
+                    }
+                })
+            }).catch(e => {
+                res.send({code: 500, data: e});
+            });   
+    
     });
 });
 
@@ -116,4 +154,61 @@ exports.getMaps = functions.https.onRequest((req, res) => {
                 
             });
         });
+});
+
+// Methode permetttant authentification (temporaire)
+//  
+//  require users(email, password);
+//  check dans la databese les informations
+//  
+exports.authLogin = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        users.get(email,password)
+        .then(doc =>{
+            if(doc.exists){
+                if(users.doc(email) == loginEmail && users.doc(password) == loginPassword){
+                    console.log("valide");
+                }else{
+                    console.log("le mots de passe ou l'email");
+                }
+                console.log("users existe pas");
+            }
+        })
+
+    });
+});
+// Methode permetttant authentification (temporaire)
+//  
+//  require users(email, password);
+//  check dans la databese les informations
+//  
+exports.shareImage = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        //const signIn = firebase.auth().signInWithEmailAndPassword(email,password);
+
+        maps.get();
+        users.get(email,password)
+            .then(doc =>{
+                if(doc.exists){
+                    if(users.doc(email) != signEmail && users.doc(password) != signPassword){  // changer quand le systeme de session mis en place
+                        console.log("refuser le partage image")
+                    }else{
+                        console.log("accepté le partage image")
+                    }
+                    console.log("users existe pas")
+                }
+            })
+    });
+});
+
+exports.checkSignIn = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(result) {
+        // result.user.tenantId should be ‘TENANT_PROJECT_ID’.
+    }).catch(function(error) {
+        // Handle error.
+    });
+       
+    });
 });

@@ -17,6 +17,7 @@
     "firebase": "^7.15.1",
     "firebase-admin": "^8.12.1",
     "firebase-functions": "^3.6.2",
+    "firebaseui": "^4.5.1",
     "formik": "^2.1.4",
     "moment": "^2.26.0",
     "node-sass": "^4.14.1",
