@@ -20,27 +20,27 @@ export const MapSidebar = ({ ...props }) => {
                 </div>
                 <FontAwesomeIcon 
                     icon={icons.faMapMarkedAlt} data-tip="" data-for="type-marker" 
-                    className={'icon pointer' + (mapData.drawingMode === modes.marker ? ' active' : '')} 
+                    className={'icon pointer' + (mapData?.drawingMode === modes.marker ? ' active' : '')} 
                     onClick={() =>setMapData({...mapData, drawingMode: modes.marker})}
                 />
                 <FontAwesomeIcon 
-                    icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (mapData.drawingMode === modes.polyline ? ' active' : '')}
+                    icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (mapData?.drawingMode === modes.polyline ? ' active' : '')}
                     onClick={() =>setMapData({...mapData, drawingMode: modes.polyline})}
                 />
                 <FontAwesomeIcon 
                     icon={icons.faHandPointer} data-tip="" data-for="type-default" 
-                    className={'icon pointer' + (!mapData.drawingMode ? ' active' : '')} onClick={() =>setMapData(null)}
+                    className={'icon pointer' + (!mapData?.drawingMode ? ' active' : '')} onClick={() =>setMapData(null)}
                 />
                 <FontAwesomeIcon 
-                    icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData.darkode ? ' active' : '')} 
-                    onClick={() =>setMapData({...mapData, darkMode: !mapData.darkMode})}
+                    icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData?.darkMode ? ' active' : '')} 
+                    onClick={() =>setMapData({...mapData, darkMode: !mapData?.darkMode})}
                 />
                 <Slider min="1" max="20" val="12" tip="Zoom"/>
 
-                <ReactTooltip className="tooltip" id="type-marker">{ mapData.drawingMode === modes.marker ? 'Mode marqueur' : 'Ajouter un marqueur'}</ReactTooltip>
-                <ReactTooltip className="tooltip" id="type-polyline">{ mapData.drawingMode === modes.polyline ? 'Mode dessin' : 'Dessiner un trajet'}</ReactTooltip>
-                <ReactTooltip className="tooltip" id="type-default">{ mapData.drawingMode ? 'Pointeur actif' : 'Activer pointeur'}</ReactTooltip>
-                <ReactTooltip className="tooltip" id="dark-mode">{ mapData.darkMode ? 'Mode clair' : 'Mode sombre'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="type-marker">{ mapData?.drawingMode === modes.marker ? 'Mode marqueur' : 'Ajouter un marqueur'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="type-polyline">{ mapData?.drawingMode === modes.polyline ? 'Mode dessin' : 'Dessiner un trajet'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="type-default">{ mapData?.drawingMode ? 'Pointeur actif' : 'Activer pointeur'}</ReactTooltip>
+                <ReactTooltip className="tooltip" id="dark-mode">{ mapData?.darkMode ? 'Mode clair' : 'Mode sombre'}</ReactTooltip>
             </div>
             <div className="controls-row column">
                 <div className="controls-row-label" >

@@ -30,7 +30,7 @@ export const MapMain = () => {
   };
 
   const savePath = polyline => {
-    setMapData({...mapData, polylinePath: polyline.getPath()})
+    setMapData({...mapData, polylinePath: polyline.getPath().i})
   }
 
   const shareLink = () => {
@@ -85,9 +85,9 @@ export const MapMain = () => {
                     )}
                     <GoogleMap
                       mapContainerStyle={{'height': '70px', 'width': '370px', 'position': 'absolute', 'left': '1%', 'top': '1%'}}
-                      center={mapData.center}
-                      zoom={mapData.zoom}
-                      options={{ styles: mapData.darkMode ? mapOptions : null }}
+                      center={mapData?.center}
+                      zoom={mapData?.zoom}
+                      options={{ styles: mapData?.darkMode ? mapOptions : null }}
                     >
                       <Autocomplete 
                         onLoad={ac => setPlacesData(ac)}
@@ -100,24 +100,25 @@ export const MapMain = () => {
                     </GoogleMap>
                     <GoogleMap
                        mapContainerStyle={config.style}
-                       center={mapData.center}
-                       zoom={mapData.zoom}
-                       options={{ styles: mapData.darkMode ? mapOptions : null }}
+                       center={mapData?.center}
+                       zoom={mapData?.zoom}
+                       options={{ styles: mapData?.darkMode ? mapOptions : null }}
                     >
                        <DrawingManager 
                             options={{
-                              drawingMode: mapData.drawingMode,
+                              drawingMode: mapData?.drawingMode,
                               polylineOptions: {
+                                visible: true,
                                 controls: ['Point', 'LineString', 'Polygon'],
                                 fillColor: "red",
                                 strokeColor: 'purple',
                                 strokeOpacity: 1,
-                                strokeWeight: 5,
+                                strokeWeight: 10,
                                 path: 
                                   [
                                       {
-                                          "lat": -19.00624281951321,
-                                          "lng": 146.1908406119171
+                                          "lat": -19.00311085314845,
+                                          "lng": 146.18054092929992,
                                       },
                                       {
                                           "lng": 146.18908108280334,
