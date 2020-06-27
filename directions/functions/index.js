@@ -84,7 +84,7 @@ exports.createMap = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const id = uuidv4();
         //dataUser_id = users.doc(user_ID).get();
-        maps.doc(id).set({...req.body, created: moment(), id, user_id = null})
+        maps.doc(id).set({...req.body, created: moment(), id})
             .then(() => {
                 maps.doc(id).get()
                     .then(doc => {
@@ -104,13 +104,15 @@ exports.createMap = functions.https.onRequest((req, res) => {
 
 exports.assignMap = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        dataUser_id = users.doc(user_ID).get().push();
-        maps.doc(id).get({...req.body, created: moment(), id, user_id = null})
+        const id = "841561645";
+        const dataUser_id = 'duydbzndddvzydu';
+
+        maps.doc(id).set({...req.body, created: moment(), id, user_id: dataUser_id})
             .then(() => {
-            maps.doc(id).set(user_id = dataUser_id)
+            maps.doc(id).get()
                 .then(doc => {
                     if (doc.exists){
-                        res.send({code: 200, data: doc.data()});
+                        res.send({code: 200, data: doc.data()});    
                     }else{
                         res.send({code: 400, data: null});
                     }
