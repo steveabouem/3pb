@@ -158,14 +158,17 @@ exports.getMaps = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         maps.get()
             .then(snapshot => {
-                let mapList = snapshot.reduce((acc, map) => {
-                    let mapInfo = map.data();
-                    return {title: mapInfo.title, data: mapInfo.data, creator: mapInfo.created_by || null}
-                }, []);
+                let mapList = [];
+
+                snapshot.forEach(map => {
+                    mapList.push(map.data());
+                });
 
                 res.send({code: 200, data: mapList});
             })
             .catch(e => {
+                console.log('getmaps error:', e);
+                
                 res.send({code: 500, data: e});
                 
             });

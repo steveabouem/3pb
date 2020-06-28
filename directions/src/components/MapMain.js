@@ -5,14 +5,14 @@ import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { MapSidebar } from './MapSidebar';
 import { MapsContext } from '../helpers/contexts';
-import { createMap } from '../helpers/api';
+import { createMap, getMaps } from '../helpers/api';
 import { Modal } from '../common/Modals';
 
 export const MapMain = () => {
   const [loading, setLoading] = useState(true);
-  const [mapData, setMapData] = useState({ center: {lat:  -19.00624281951321, lng: 146.1908406119171}, zoom: 13, drawingMode: null, darkMode: false});
+  const [mapData, setMapData] = useState({ center: {lat: 5.30966, lng: -4.01266}, zoom: 13, drawingMode: null, darkMode: false});
   const [placesData, setPlacesData] = useState({});
-  const [polyData, setPolyData] = useState(null);
+  const [userMaps, setUserMaps] = useState([]);
   const [modal, setModal] = useState({opened: false, type: ''});
 
   const validations = Yup.object().shape({
@@ -24,15 +24,22 @@ export const MapMain = () => {
     step1: ''
   };
 
+  useEffect(() => {
+    async function updateMapList() {
+      const maps = await getMaps();
+      setUserMaps(maps?.data?.data);
+    }
+    updateMapList();
+  }, [loading]);
+
   const searchLocation = () => {
     let result = placesData?.getPlace().geometry.location;
     setMapData({...mapData, center: {lat: result.lat() , lng: result.lng()}});
   };
 
   const savePath = polyline => {
-    setMapData({...mapData, polylinePath: polyline.getPath().i})
+    setMapData({ ...mapData, polylinePath: polyline.getPath().i })
   }
-
   const shareLink = () => {
   };
 
@@ -52,13 +59,7 @@ export const MapMain = () => {
     });
   };
   
-  // if (polyData) {
-  //   const poly = polyData.getPath();
-  //   console.log({poly});
-  // } else {
-  //   console.log('no poly yet');
-    
-  // }
+ 
   return (
     <Formik
       initialValues={initialValues}
@@ -66,7 +67,7 @@ export const MapMain = () => {
       onSubmit={() => setModal({opened: true, type:'confirm'})}
     >
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-        <MapsContext.Provider value={{ mapData, setMapData }}>
+        <MapsContext.Provider value={{ mapData, setMapData, userMaps }}>
           <LoadScript
             googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
             loadingElement={Loader}
@@ -85,9 +86,9 @@ export const MapMain = () => {
                     )}
                     <GoogleMap
                       mapContainerStyle={{'height': '70px', 'width': '370px', 'position': 'absolute', 'left': '1%', 'top': '1%'}}
-                      center={mapData?.center}
-                      zoom={mapData?.zoom}
-                      options={{ styles: mapData?.darkMode ? mapOptions : null }}
+                      center={mapData.center}
+                      zoom={mapData.zoom}
+                      options={{ styles: mapData.darkMode ? mapOptions : null }}
                     >
                       <Autocomplete 
                         onLoad={ac => setPlacesData(ac)}
@@ -104,27 +105,26 @@ export const MapMain = () => {
                        zoom={mapData?.zoom}
                        options={{ styles: mapData?.darkMode ? mapOptions : null }}
                     >
+                         <Polyline
+                          options={{
+                            visible: true,
+                            editable: true,
+                            controls: ['Point', 'LineString', 'Polygon'],
+                            strokeColor: 'purple',
+                            strokeOpacity: 1,
+                            strokeWeight: 5,
+                            path: [{ lat: 5.35825, lng: -4.01815, }, { lat: 5.35688, lng: -3.99635 }]
+                          }}
+                        />
                        <DrawingManager 
                             options={{
                               drawingMode: mapData?.drawingMode,
                               polylineOptions: {
-                                visible: true,
                                 controls: ['Point', 'LineString', 'Polygon'],
                                 fillColor: "red",
                                 strokeColor: 'purple',
                                 strokeOpacity: 1,
-                                strokeWeight: 10,
-                                path: 
-                                  [
-                                      {
-                                          "lat": -19.00311085314845,
-                                          "lng": 146.18054092929992,
-                                      },
-                                      {
-                                          "lng": 146.18908108280334,
-                                          "lat": -19.005076263111306
-                                      }
-                                  ]
+                                strokeWeight: 5
                               }
                             }}
                             onPolylineComplete={savePath}

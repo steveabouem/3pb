@@ -29,7 +29,7 @@ export const MapSidebar = ({ ...props }) => {
                 />
                 <FontAwesomeIcon 
                     icon={icons.faHandPointer} data-tip="" data-for="type-default" 
-                    className={'icon pointer' + (!mapData?.drawingMode ? ' active' : '')} onClick={() =>setMapData(null)}
+                    className={'icon pointer' + (!mapData?.drawingMode ? ' active' : '')} onClick={() =>setMapData({...mapData, drawingMode: null})}
                 />
                 <FontAwesomeIcon 
                     icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData?.darkMode ? ' active' : '')} 
