@@ -66,6 +66,15 @@ body {
         display: none;
     }
     // COMMON CLASSES_______
+    .reg {
+        font-size: 15px;
+    }
+    .med {
+        font-size: 18px;
+    }
+    .lg {
+        font-size: 25px;
+    }
     .not-found {
         .button {
             width: 20%;
@@ -268,10 +277,8 @@ body {
     .footer {
         background: black;
         height: 5%;
-        position: fixed;
         display: flex;
         align-items: center;
-        bottom: 0;
         width: 100%;
         color: white;
     }
@@ -477,20 +484,24 @@ body {
                     }
 
                     .step-box {
-                        border: 1px solid;
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between;
-                        width: 30%;
-                        padding: 5px;
-
+                        width: 45%;
+                        padding: 20px;
+                        text-align: justify;
+                        background: #ffffff1f;
+                        margin-right: 55%;
+                        &.right {
+                            margin-left: 55%;
+                            margin-right: 0;
+                        }
                         .title {
                             color: #27ccc0;
                             text-align: left;
-                            flex: 0 0 10%;
-                            font-size: 1.1em;
+                            font-size: 1.3em;
                             font-weight: 600;
-                            padding-bottom: 10px;
+                            padding-bottom: 15px;
                         }
                         .body {
                             flex: 0 1 auto;
@@ -499,7 +510,7 @@ body {
                             flex: 20%;
                             display: flex;
                             justify-content: center;
-                            padding: 10px;
+                            padding: 15px;
                             * {
                                 align-self: flex-end;
                             }

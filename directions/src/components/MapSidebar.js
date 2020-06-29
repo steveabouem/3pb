@@ -10,7 +10,7 @@ import { Slider } from '../common/Slider';
 
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue } = useFormikContext();
-    const { setMapData, mapData } = useContext(MapsContext);
+    const { setMapData, mapData, userMaps } = useContext(MapsContext);
     
     return (
         <div className="sidebar left">
@@ -57,6 +57,19 @@ export const MapSidebar = ({ ...props }) => {
                         onChange={e => { props.searchLocation(e.target.value); setFieldValue('destination', e.target.value); }}
                     />
                 </div>
+            </div>
+            <div className="controls-row column">
+                <div className="controls-row-label">
+                    <label>MES CARTES</label>
+                </div>
+                {userMaps && userMaps.map((m, i) => (
+                    <React.Fragment>
+                        {/* <label>Titre de la carte</label> */}
+                        <div className="sidebar-row">
+                            <b>{m?.title || 'Sans titre'}</b>
+                        </div>
+                    </React.Fragment>
+                ))}
             </div>
             <div className="button standard white-bg" onClick={props.submit}>SAUVEGARDER</div>
         </div>
