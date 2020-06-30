@@ -16,6 +16,9 @@ exports.helloWorld = functions.https.onRequest((req, res) => {
 
     });
 });
+
+//SECTION USER 
+
 // TODO: handles password and sessions with custom tokens: https://firebase.google.com/docs/auth/admin/verify-id-tokens
 exports.createUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
@@ -68,6 +71,7 @@ exports.deleteUser = functions.https.onRequest((req, res) => {
 
 });
 
+// SECTION MAP
 
 // cette fonction attend les arguments suivants: 
 // {
@@ -104,8 +108,8 @@ exports.createMap = functions.https.onRequest((req, res) => {
 
 exports.assignMap = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const id = "841561645";
-        const dataUser_id = 'duydbzndddvzydu';
+        //const id ;
+        //const dataUser_id = ; variable a definir 
 
         maps.doc(id).set({...req.body, created: moment(), id, user_id: dataUser_id})
             .then(() => {
@@ -173,27 +177,7 @@ exports.getMaps = functions.https.onRequest((req, res) => {
         });
 });
 
-// Methode permetttant authentification (temporaire)
-//  
-//  require users(email, password);
-//  check dans la databese les informations
-//  
-exports.authLogin = functions.https.onRequest((req, res) => {
-    cors(req, res, () => {
-        users.get(email,password)
-        .then(doc =>{
-            if(doc.exists){
-                if(users.doc(email) == loginEmail && users.doc(password) == loginPassword){
-                    console.log("valide");
-                }else{
-                    console.log("le mots de passe ou l'email");
-                }
-                console.log("users existe pas");
-            }
-        })
 
-    });
-});
 // Methode permetttant authentification (temporaire)
 //  
 //  require users(email, password);
@@ -217,6 +201,29 @@ exports.shareImage = functions.https.onRequest((req, res) => {
             })
     });
 });
+//SECTION LOGIN (temporaire)
+
+// Methode permetttant authentification (temporaire)
+//  
+//  require users(email, password);
+//  check dans la databese les informations
+//  
+exports.authLogin = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        users.get(email,password)
+        .then(doc =>{
+            if(doc.exists){
+                if(users.doc(email) == loginEmail && users.doc(password) == loginPassword){
+                    console.log("valide");
+                }else{
+                    console.log("le mots de passe ou l'email");
+                }
+                console.log("users existe pas");
+            }
+        })
+
+    });
+});
 
 exports.checkSignIn = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
@@ -229,3 +236,47 @@ exports.checkSignIn = functions.https.onRequest((req, res) => {
        
     });
 });
+
+// SECTION SESSION
+
+/*function createUserRecordByEmail(){
+
+    const email = users.get(); 
+
+    admin.auth().getUserByEmail(email)
+        .then(function(userRecord) {
+            // See the UserRecord reference doc for the contents of userRecord.
+            console.log('Successfully fetched user data:', userRecord.toJSON());
+       })
+        .catch(function(error) {
+             console.log('Error fetching user data:', error);
+        });
+}*/
+
+function createCustomToken(){
+    
+}
+
+exports.createSession = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        let uid = 'e66aec9d-b6db-4359-97d2-f8563fdac26a';         //user_id aléatoire
+        admin.auth().createCustomToken(uid)    // creation d'un token liée a un user
+        .then(function(customToken) {
+            admin.auth().signInWithCustomToken(customToken).catch(function(error){    //envoie le token aux client
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            })
+            console.log('envoye du token aux client succesfull')
+        })
+        .catch(function(error) {
+            res.send({code: 500, data: error});
+        });
+    });
+});
+
+/*admin.auth().currentUser.getIdToken(/* forceRefresh  true).then(function(idToken) {
+    // Send token to your backend via HTTPS
+    // ...
+  }).catch(function(error) {
+    // Handle error
+  });*/
