@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, DrawingManager, Polyline, Marker } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
-import { Formik, Field } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { MapSidebar } from './MapSidebar';
 import { MapsContext } from '../helpers/contexts';
@@ -9,7 +9,6 @@ import { createMap, getMaps } from '../helpers/api';
 import { Modal } from '../common/Modals';
 import { config, mapOptions } from '../helpers/variables';
 import { CustomInfoWindow } from './CustomInfoWindow';
-import { CustomMarker } from './CustomMarker';
 
 export const MapMain = () => {
   const [loading, setLoading] = useState(true);
@@ -103,9 +102,11 @@ export const MapMain = () => {
                       >
                         {customInfo?.info && <CustomInfoWindow />}
                         {mapData?.markers && mapData?.markers.length && mapData?.markers.map((m, i) => (
-                          <Marker
-                            position={m}
-                          />
+                          <React.Fragment key={`marker-${i}`}>
+                            <Marker
+                              position={m}
+                            />
+                          </React.Fragment>
                         ))}
                         <Polyline
                           options={{

@@ -18,7 +18,7 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const loadMap = () => axios.get(baseURL + '/hello');
 export const signup = ({email, password}) => firebase.auth().createUserWithEmailAndPassword(email, password);
-// export const signin = ({email, password}) => firebase.auth().createUserWithEmailAndPassword(email, password);
+export const signin = ({email, password}) => firebase.auth().createUserWithEmailAndPassword(email, password);
 export const createUser = (values) => axios.post(baseURL + '/createUser', {"content-type": "application/json" }, {data: values});
 export const getUser = (email) => axios.post(baseURL + '/getUser', {"content-type": "application/json" }, {data: {email}});
 export const getMaps = () => axios.get(baseURL + '/getMaps');

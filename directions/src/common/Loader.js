@@ -1,5 +1,4 @@
 import React from 'react';
-import { css } from "@emotion/core";
 import DotLoader from "react-spinners/DotLoader";
 
 export const Loader = ({ loading }) => {

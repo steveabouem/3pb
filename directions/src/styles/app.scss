@@ -401,7 +401,7 @@ body {
                         &.flex {
                             flex: 1;
                             &.start {
-                                justify-content: start;
+                                justify-content: flex-start;
                                 align-items: center;
                                 padding: 0 1%;
                                 &:hover {
@@ -421,7 +421,7 @@ body {
                 height: auto;
                 animation: reveal 0.5s linear;
                 flex-direction: column;
-                justify-content: start;
+                justify-content: flex-start;
 
                 .sidebar {
                     position: absolute;

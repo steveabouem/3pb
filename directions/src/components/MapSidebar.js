@@ -8,7 +8,7 @@ import { MapTitle } from './MapTitle';
 import { MapsContext } from '../helpers/contexts';
 import { modes, mapOptions, mapStyles } from '../helpers/variables';
 import { Slider } from '../common/Slider';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue } = useFormikContext();

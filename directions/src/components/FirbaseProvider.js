@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { UserContext } from '../helpers/contexts';
-import { auth, firestore, getUser } from '../helpers/api';
+import { auth, firestore } from '../helpers/api';
 
 export const FirebaseProvider = ({children}) => {
     const [user, setUser] = useState(null);

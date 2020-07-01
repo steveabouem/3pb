@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { clientRoutes } from '../helpers/routes';
-import { icons } from '../common/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from '../assets/logo.png';
 import { UserContext } from '../helpers/contexts';
 import { auth } from '../helpers/api';

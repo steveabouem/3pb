@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { clientRoutes } from '../helpers/routes';
 import { Loader } from '../common/Loader';
 import { MapStep } from './MapStep';
@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 export const Landing = () => {
-    const { user } = useContext(UserContext);
+    // const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(true);
     const [scroll, setScroll] = useState(false);
 
