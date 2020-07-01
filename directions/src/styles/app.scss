@@ -4,6 +4,37 @@ body {
         transition: 0.3s;
         font-family: "Quicksand", sans-serif;
         outline: none;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE 10+ */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: none !important;
+            background-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 3px !important;
+            background-color: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: transparent;
+        }
+        .on-scrollbar{
+            scrollbar-width: thin; /* Firefox */
+            -ms-overflow-style: none; /* IE 10+ */
+          }
+          
+          .on-scrollbar::-webkit-scrollbar-track {
+            -webkit-box-shadow: none !important;
+            background-color: transparent !important;
+          }
+          
+          .on-scrollbar::-webkit-scrollbar {
+            width: 6px !important;
+            background-color: transparent;
+          }
+          
+          .on-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #acacac;
+          }
     }
     li {
         list-style: none;
@@ -27,18 +58,48 @@ body {
         top: 0;
         height: 35px;
         width: 335px;
-        padding: 15px;
+        padding: 15px 0 15px 30px;
         color: grey;
         border-radius: 15px;
+    }
+    #sidebar-toggle {
+        position: absolute;
+        color: #888484;
+        left: 5px;
+        top: 20px;
+        z-index: 50;
+        font-size: 25px;
+        cursor: pointer;
+        &:hover {
+            color: #22c1c3;
+        }
+        &.active {
+            color: black;
+        }
     }
     .gmnoprint {
         display: none;
     }
     // COMMON CLASSES_______
+    .reg {
+        font-size: 15px;
+    }
+    .med {
+        font-size: 18px;
+    }
+    .lg {
+        font-size: 25px;
+    }
     .not-found {
         .button {
             width: 20%;
             margin: auto;
+        }
+    }
+    .overflow {
+        overflow-y: auto;
+        &.x {
+            overflow-x: auto;
         }
     }
     .version {
@@ -101,6 +162,10 @@ body {
     .column {
         display: flex;
         flex-direction: column;
+    }
+    .between {
+        display: flex;
+        justify-content: space-between;
     }
     .pointer {
         cursor: pointer;
@@ -231,10 +296,8 @@ body {
     .footer {
         background: black;
         height: 5%;
-        position: fixed;
         display: flex;
         align-items: center;
-        bottom: 0;
         width: 100%;
         color: white;
     }
@@ -338,7 +401,7 @@ body {
                         &.flex {
                             flex: 1;
                             &.start {
-                                justify-content: start;
+                                justify-content: flex-start;
                                 align-items: center;
                                 padding: 0 1%;
                                 &:hover {
@@ -358,33 +421,45 @@ body {
                 height: auto;
                 animation: reveal 0.5s linear;
                 flex-direction: column;
-                justify-content: start;
+                justify-content: flex-start;
 
                 .sidebar {
                     position: absolute;
                     z-index: 20;
                     background: white;
-                    height: 85%;
+                    height: 75%;
                     border-top: none;
                     padding: 15px 0;
                     text-align: left;
                     top: 12%;
-                    animation: slideDown .5s linear;
+                    animation: reveal .5s linear;
                     width: 365px;
                     left: 1%;
+                    overflow: hidden scroll;
                     background: transparent;
-                    &.collapsed {
-                        height: 0;
-                        border: none;
-                        background: transparent;
-                        // top: 20%;
-                        // left: 0;
-                        transition: none;
-                    }
                     .sidebar-row {
                         display: inline-flex;
                         align-items: center;
                         justify-content: inherit;
+                        .map-item {
+                            text-align: center;
+                            width: 90%;
+                            margin: auto;
+                            div {
+                                border-radius: 5px;
+                                width: 100%;
+                                padding: 15px 0;
+                                background: white;
+                                color: #27ccc0;
+                                border: 1px solid #22c1c0;
+                            }
+                            &.active {
+                                div {
+                                    color: white;
+                                    background: #27ccc0;
+                                }
+                            }
+                        }
                     }
                     .controls-row {
                         display: flex;
@@ -414,10 +489,11 @@ body {
                             width: 90%;
                             padding: 15px;
                             height: 20px;
+                            margin: auto;
                         }
                         .button {
-                            width: 90%;
-                            margin: auto;
+                            width: 85%;
+                            margin: 15px auto;
                         }
                     }
                 }
@@ -440,20 +516,24 @@ body {
                     }
 
                     .step-box {
-                        border: 1px solid;
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between;
-                        width: 30%;
-                        padding: 5px;
-
+                        width: 45%;
+                        padding: 20px;
+                        text-align: justify;
+                        background: #ffffff1f;
+                        margin-right: 55%;
+                        &.right {
+                            margin-left: 55%;
+                            margin-right: 0;
+                        }
                         .title {
                             color: #27ccc0;
                             text-align: left;
-                            flex: 0 0 10%;
-                            font-size: 1.1em;
+                            font-size: 1.3em;
                             font-weight: 600;
-                            padding-bottom: 10px;
+                            padding-bottom: 15px;
                         }
                         .body {
                             flex: 0 1 auto;
@@ -462,7 +542,7 @@ body {
                             flex: 20%;
                             display: flex;
                             justify-content: center;
-                            padding: 10px;
+                            padding: 15px;
                             * {
                                 align-self: flex-end;
                             }
@@ -516,10 +596,10 @@ body {
 
 @keyframes slideDown {
     from {
-        height: 0;
+       transform: translateY(-20%);
     }
 
     to {
-        height: 78%;
+       transform: none;
     }
 }

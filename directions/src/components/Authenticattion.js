@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
-import { Formik, Field, Form } from 'formik';
+import React, { useState } from 'react';
+import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
-import { useHistory, Link, useLocation } from 'react-router-dom';
-import { UserContext } from '../helpers/contexts';
+import { useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { icons } from '../common/icons';
 import { signup } from '../helpers/api';

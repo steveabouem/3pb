@@ -124,34 +124,51 @@ exports.assignMap = functions.https.onRequest((req, res) => {
     });
 });
 
-// cette fonction attend les arguments suivants: 
-// {
-//     mapName: string, obligatoire
-//     userName: string (plus précisément un email), aléatoire
-// }
-// et renvoie une ARRAY d'objets map dont chacun a la structure suivante:
-// {
-//     mapName: string, obligatoire
-//     userName: string, (plus précisément un email) aléatoire
-//     polyline: Object, aléatoire
-//     marker: objet, aléatoire
-//     center: objet, obligatoire,
-//     darkmode: boolean, aléatoire
-// }
+exports.getMap = functions.https.onRequest((req,res) => {
+    cors(req, res, () => {
+        maps.doc(req.body.mapId).get()
+            .then(doc => {
+                if(doc.exists) {
+                    res.send({code: 200, data: doc.data()});
+                } else {
+                    res.send({code: 500, data: null});
+                }
+            })
+            .catch(e => {
+                res.send({code: 500, data: e});
+            });
+    });
+});
+
+exports.deleteMap = functions.https.onRequest((req,res) => {
+    cors(req, res, () => {
+        maps.doc(req.body.id).delete()
+        .then(() =>{
+            res.send({code: 200});
+        })
+        .catch(e => {
+            res.send({code: 500});
+        });
+    });
+});
+
 exports.getMaps = functions.https.onRequest((req, res) => {
+    console.log('function starts');
+    
     cors(req, res, () => {
         maps.get()
             .then(snapshot => {
-                let mapList = snapshot.reduce((acc, map) => {
-                    let mapInfo = map.data();
-                    return {title: mapInfo.title, data: mapInfo.data, creator: mapInfo.created_by || null}
-                }, []);
+                let mapList = [];
+
+                snapshot.forEach(map => {
+                    mapList.push(map.data());
+                });
 
                 res.send({code: 200, data: mapList});
             })
             .catch(e => {
+                console.log('getmaps error:', e);
                 res.send({code: 500, data: e});
-                
             });
         });
 });
