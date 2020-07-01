@@ -39,7 +39,7 @@ export const MapMain = () => {
 
   const searchLocation = () => {
     let result = placesData?.getPlace().geometry.location;
-    setMapData({ ...mapData, center: { lat: result.lat(), lng: result.lng() } });
+    setMapData({ ...mapData, zoom: 18, center: { lat: result.lat(), lng: result.lng()}});
     setCustomInfo({...customInfo, info: true});
   };
 

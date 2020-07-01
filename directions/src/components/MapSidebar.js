@@ -6,7 +6,7 @@ import { icons } from '../common/icons';
 import ReactTooltip from 'react-tooltip';
 import { MapTitle } from './MapTitle';
 import { MapsContext } from '../helpers/contexts';
-import { modes, autocompleStyles, mapOptions, mapStyles } from '../helpers/variables';
+import { modes, mapOptions, mapStyles } from '../helpers/variables';
 import { Slider } from '../common/Slider';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -58,7 +58,7 @@ export const MapSidebar = ({ ...props }) => {
                             icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData?.darkMode ? ' active' : '')} 
                             onClick={() =>setMapData({...mapData, darkMode: !mapData?.darkMode})}
                         />
-                        <Slider min="1" max="20" val="12" tip="Zoom"/>
+                        <Slider min="1" max="20" val={mapData.zoom} tip="Zoom"/>
 
                         <ReactTooltip className="tooltip" id="type-marker">{ mapData?.drawingMode === modes.marker ? 'Mode marqueur' : 'Ajouter un marqueur'}</ReactTooltip>
                         <ReactTooltip className="tooltip" id="type-polyline">{ mapData?.drawingMode === modes.polyline ? 'Mode dessin' : 'Dessiner un trajet'}</ReactTooltip>
@@ -90,7 +90,7 @@ export const MapSidebar = ({ ...props }) => {
                         </div>
                         {userMaps && userMaps.length && userMaps.map((m, i) => (
                             <div className="sidebar-row" key={`map-item-${i}`}>
-                                <NavLink to={`/map/:${m?.id}`} onClick={() => setMapData(m)} className="map-item" activeClassName="active">
+                                <NavLink to={`/map/${m?.id}`} onClick={() => setMapData(m)} className="map-item" activeClassName="active">
                                     <div>{m?.title || 'Sans titre'}</div>
                                 </NavLink>
                             </div>
