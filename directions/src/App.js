@@ -18,7 +18,7 @@ const App = () => {
 				<Switch>
 					<Route exact path="/" component={Landing}/>
 					<Route path="/map" component={MapMain}/>
-					{/* <Route path="/map:id" component={Authentication}/> */}
+					<Route path="/map/:id" component={MapMain}/>
 					<Route path="/signin" component={Authentication}/>
 					<Route path="/signup" component={Authentication}/>
 					<Route exact path="*">

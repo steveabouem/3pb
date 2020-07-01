@@ -6,9 +6,9 @@ import { icons } from '../common/icons';
 import ReactTooltip from 'react-tooltip';
 import { MapTitle } from './MapTitle';
 import { MapsContext } from '../helpers/contexts';
-import { modes, autocompleStyles, mapOptions } from '../helpers/variables';
+import { modes, autocompleStyles, mapOptions, mapStyles } from '../helpers/variables';
 import { Slider } from '../common/Slider';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue } = useFormikContext();
@@ -20,7 +20,7 @@ export const MapSidebar = ({ ...props }) => {
     return (
         <React.Fragment>
              <GoogleMap
-                mapContainerStyle={autocompleStyles}
+                mapContainerStyle={mapStyles.searchOrigin}
                 center={mapData.center}
                 zoom={mapData.zoom}
                 options={{ styles: mapData.darkMode ? mapOptions : null }}
@@ -80,20 +80,22 @@ export const MapSidebar = ({ ...props }) => {
                                 onChange={e => { props.searchLocation(e.target.value); setFieldValue('destination', e.target.value); }}
                             />
                         </div>
+                        <div className="sidebar-row">
+                            <div className="button standard white-bg" onClick={props.submit}>SAUVEGARDER</div>
+                        </div>
                     </div>
                     <div className="controls-row column">
                         <div className="controls-row-label">
                             <label>MES CARTES</label>
                         </div>
-                        {userMaps && userMaps.map((m, i) => (
+                        {userMaps && userMaps.length && userMaps.map((m, i) => (
                             <div className="sidebar-row" key={`map-item-${i}`}>
-                                <div className="map-item">
-                                    <Link to={`/map?id=${m?.id}`} onClick={() => setMapData(m)}>{m?.title || 'Sans titre'}</Link>
-                                </div>
+                                <NavLink to={`/map/:${m?.id}`} onClick={() => setMapData(m)} className="map-item" activeClassName="active">
+                                    <div>{m?.title || 'Sans titre'}</div>
+                                </NavLink>
                             </div>
                         ))}
                     </div>
-                    <div className="button standard white-bg" onClick={props.submit}>SAUVEGARDER</div>
                 </div>
             )}
         </React.Fragment>

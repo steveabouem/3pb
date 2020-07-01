@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GoogleMap, LoadScript, DrawingManager, Polyline } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DrawingManager, Polyline, Marker } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -8,13 +8,17 @@ import { MapsContext } from '../helpers/contexts';
 import { createMap, getMaps } from '../helpers/api';
 import { Modal } from '../common/Modals';
 import { config, mapOptions } from '../helpers/variables';
+import { CustomInfoWindow } from './CustomInfoWindow';
+import { CustomMarker } from './CustomMarker';
 
 export const MapMain = () => {
   const [loading, setLoading] = useState(true);
-  const [mapData, setMapData] = useState({ center: { lat: 5.30966, lng: -4.01266 }, zoom: 13, drawingMode: null, darkMode: false });
+  //ADIDJAN
+  const [mapData, setMapData] = useState({ center: { lat: 5.30966, lng: -4.01266 }, zoom: 14, drawingMode: null, darkMode: false, markers: [] });
   const [placesData, setPlacesData] = useState({});
   const [userMaps, setUserMaps] = useState([]);
   const [modal, setModal] = useState({ opened: false, type: '' });
+  const [customInfo, setCustomInfo] = useState(null);
 
   const validations = Yup.object().shape({
     step1: Yup.string().required().min(4)
@@ -36,11 +40,19 @@ export const MapMain = () => {
   const searchLocation = () => {
     let result = placesData?.getPlace().geometry.location;
     setMapData({ ...mapData, center: { lat: result.lat(), lng: result.lng() } });
+    setCustomInfo({...customInfo, info: true});
+  };
+
+  const addMarker = m => {
+    let markers = mapData.markers;
+    markers.push(m.position);
+    setMapData({...mapData, markers});
   };
 
   const savePath = polyline => {
     setMapData({ ...mapData, polylinePath: polyline.getPath().i })
-  }
+  };
+
   const shareLink = () => {
   };
 
@@ -66,7 +78,7 @@ export const MapMain = () => {
       onSubmit={() => setModal({ opened: true, type: 'confirm' })}
     >
       {({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-        <MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchLocation }}>
+        <MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchLocation, customInfo, setCustomInfo, addMarker }}>
           <LoadScript
             googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
             loadingElement={Loader}
@@ -89,18 +101,25 @@ export const MapMain = () => {
                         zoom={mapData?.zoom}
                         options={{ styles: mapData?.darkMode ? mapOptions : null }}
                       >
+                        {customInfo?.info && <CustomInfoWindow />}
+                        {mapData?.markers && mapData?.markers.length && mapData?.markers.map((m, i) => (
+                          <Marker
+                            position={m}
+                          />
+                        ))}
                         <Polyline
                           options={{
                             visible: true,
                             editable: true,
-                            controls: ['Point', 'LineString', 'Polygon'],
+                            controls: ['LineString', 'Polygon'],
                             strokeColor: 'purple',
                             strokeOpacity: 1,
                             strokeWeight: 5,
-                            path: mapData?.polylinePath
+                            path: mapData && mapData.polylinePath ? mapData.polylinePath : []
                           }}
                         />
                         <DrawingManager
+                          onMarkerComplete={m => addMarker(m)}
                           options={{
                             drawingMode: mapData?.drawingMode,
                             polylineOptions: {
@@ -124,3 +143,4 @@ export const MapMain = () => {
     </Formik>
   );
 };
+

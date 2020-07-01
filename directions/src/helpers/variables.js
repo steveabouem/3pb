@@ -1,20 +1,18 @@
+export const mapStyles = {
+  main: { height: '100%', width: '100%', flex: 1, alignSelf: 'center', position: 'relative', overflow: 'hidden'},
+  searchOrigin: { height: '70px', width: '370px', position: 'absolute', left: '1%', top: '1%' },
+  searchDestination: {},
+  marker: {}
+};
+
 export const modes = { marker: 'marker', polyline: 'polyline' };
 
 export const config = {
   libraries: ['drawing', 'places'],
-  style: {
-    height: '100%',
-    width: '100%',
-    flex: 1,
-    alignSelf: 'center',
-    position: 'relative',
-    overflow: 'hidden'
-  },
+  style: mapStyles.main,
   types: ['geocode', 'cities'],
   fields: ['name']
 };
-
-export const autocompleStyles = { 'height': '70px', 'width': '370px', 'position': 'absolute', 'left': '1%', 'top': '1%' };
 
 export const mapOptions = [
   { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
