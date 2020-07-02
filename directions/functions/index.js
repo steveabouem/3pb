@@ -262,9 +262,9 @@ exports.createSession = functions.https.onRequest((req, res) => {
         let uid = 'e66aec9d-b6db-4359-97d2-f8563fdac26a';         //user_id aléatoire
         admin.auth().createCustomToken(uid)    // creation d'un token liée a un user
         .then(function(customToken) {
-            admin.auth().signInWithCustomToken(customToken).catch(function(error){    //envoie le token aux client
-                var errorCode = error.code;
-                var errorMessage = error.message;
+            admin.auth().signInWithCustomToken(customToken)     //envoie le token aux client
+            .catch(function(error){    
+                res.send({code: 500, data: error});
             })
             console.log('envoye du token aux client succesfull')
         })
@@ -274,9 +274,11 @@ exports.createSession = functions.https.onRequest((req, res) => {
     });
 });
 
-/*admin.auth().currentUser.getIdToken(/* forceRefresh  true).then(function(idToken) {
+function verifToken(){
+    admin.auth().currentUser.getIdToken(/* forceRefresh */true).then(function(idToken) {
     // Send token to your backend via HTTPS
     // ...
   }).catch(function(error) {
     // Handle error
-  });*/
+  });
+}
