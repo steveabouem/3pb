@@ -21,31 +21,34 @@ export const Authentication = () => {
     });
 
     const submit = (values, actions) => {
-        setLoading(true);
-        actions.setSubmitting(true);
+        alert('Activation à la phase 2');
+        actions.resetForm();
+        actions.setSubmitting(false);
+        // setLoading(true);
+        // actions.setSubmitting(true);
         
-        if (values.conf_password && values.conf_password !== values.password) {
-            actions.setErrors({conf_password: 'not matching'});
-            actions.setSubmitting(false);
-            setLoading(false);
-            return;
-        } else if (isSigningIn) {
+        // if (values.conf_password && values.conf_password !== values.password) {
+        //     actions.setErrors({conf_password: 'not matching'});
+        //     actions.setSubmitting(false);
+        //     setLoading(false);
+        //     return;
+        // } else if (isSigningIn) {
 
-        } else {
-            signup(values)
-                .then(() => {
-                    createUser(values);
-                })
-                .then(data => {
-                    setLoading(false);
-                    history.push('/map');
-                })
-                .catch(e => {
-                    actions.setSubmitting(false);
-                    setLoading(false);
-                    console.log({e});
-                });
-        }
+        // } else {
+        //     signup(values)
+        //         .then(() => {
+        //             createUser(values);
+        //         })
+        //         .then(data => {
+        //             setLoading(false);
+        //             history.push('/map');
+        //         })
+        //         .catch(e => {
+        //             actions.setSubmitting(false);
+        //             setLoading(false);
+        //             console.log({e});
+        //         });
+        // }
     };
 
     return (

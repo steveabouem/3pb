@@ -13,7 +13,6 @@ const App = () => {
 	return (
 		<div className="App">
 			<FirebaseProvider>
-				<Nav />
 				<Switch>
 					<Route exact path="/" component={Landing}/>
 					<Route path="/map" component={MapMain}/>

@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
 
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue } = useFormikContext();
-    const { setMapData, mapData, userMaps, searchLocation, setPlacesData } = useContext(MapsContext);
+    const { setMapData, mapData, userMaps, searchLocation, setPlacesData, setModal, deleteUserMap } = useContext(MapsContext);
     const [sidebar, setSidebar] = useState(false);
     
     const toggleSideBar = () => setSidebar(!sidebar);
@@ -90,9 +90,16 @@ export const MapSidebar = ({ ...props }) => {
                         </div>
                         {userMaps && userMaps.length && userMaps.map((m, i) => (
                             <div className="sidebar-row" key={`map-item-${i}`}>
-                                <NavLink to={`/map/${m?.id}`} onClick={() => setMapData(m)} className="map-item" activeClassName="active">
-                                    <div>{m?.title || 'Sans titre'}</div>
-                                </NavLink>
+                                <div>{m?.title || 'Sans titre'}</div>
+                                <div className="between">
+                                    <NavLink to={`/map/${m?.id}`} onClick={() => setMapData(m)} className="map-item" activeClassName="active">
+                                        <FontAwesomeIcon icon={icons.faEye} />
+                                    </NavLink>
+                                    <FontAwesomeIcon 
+                                        icon={icons.faTrashAlt} className="map-item pointer flex" 
+                                        onClick={() =>setModal({opened: true, type: 'delete', action: deleteUserMap, params: m.id})}
+                                    />
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -7,6 +7,8 @@ import { icons } from '../common/icons';
 import logo from '../assets/logo.png';
 import { UserContext } from '../helpers/contexts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Nav } from './Nav';
+import convo from '../assets/phone_shot.png';
 
 
 export const Landing = () => {
@@ -33,13 +35,18 @@ export const Landing = () => {
     return loading ? (
         <Loader />
     ) : (
-            <div className={'section-wrap gradient overflow' + (scroll ? ' scrollbar' : '')} onScroll={handleScroll}>
+            <div className={'section-wrap relative  overflow' + (scroll ? ' scrollbar' : '')} onScroll={handleScroll}>
+				<Nav />
+                <div className="red-bubble"/>
                 <div className="section-lane">
                     <div className="site-title">
                         <img src={logo} alt={logo} align="textTop" />
                         <div className="lg"><b><FontAwesomeIcon icon={icons.faQuoteLeft}/>&nbsp;
                             Se perdre est une autre façon d'apprendre le chemin
                         &nbsp;<FontAwesomeIcon icon={icons.faQuoteRight}/></b><br/>(proverbe Africain)</div>
+                    </div>
+                    <div>
+                        <img src={convo} />
                     </div>
                 </div>
                 <div className="section-lane lg">
