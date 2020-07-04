@@ -37,8 +37,13 @@ body {
             background-color: #acacac;
           }
     }
+    ul {
+        margin: 0;
+        padding: 0;
+    }
     li {
         list-style: none;
+        padding: 15px 0;
     }
     a {
         text-decoration: none;
@@ -90,6 +95,12 @@ body {
     }
     .lg {
         font-size: 25px;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    .bolder {
+        font-weight: bolder;
     }
     .not-found {
         .button {
@@ -158,10 +169,16 @@ body {
         font-weight: 600!important;
     }
     .white {
-        color: white;
+        color: white!important;
     }
     .black {
         color: black!important;
+    }
+    .red {
+        color: #ea4235;
+    }
+    .red-bg {
+        background: #ea4235;
     }
     .white-bg {
         background: white;
@@ -187,6 +204,11 @@ body {
     .center {
         justify-content: center !important;
         align-items: center;
+    }
+    .green-line {
+        width: 2px;
+        background: #27ccc0;
+        height: 100%;
     }
     .form-bg {
         position: relative;
@@ -247,7 +269,6 @@ body {
     .button {
         padding: 10px;
         border: 1px solid;
-        box-shadow: 2px 2px 1px;
         border-radius: 1px;
         color: black;
         text-align: center;
@@ -285,12 +306,16 @@ body {
     }
     .site-title {
         display: flex;
-        align-items: center;
-        font-size: 2em;
         color: #6d6d6d;
-        img {
-            border-radius: 70px;
-            height: 150px;
+        flex: 0 1 50%;
+        text-align: left;
+        .button {
+            width: 35%;
+            background: #ffbb00;
+            color: white;
+            &:hover {
+                background: black;
+            }
         }
     }
     .rounded-field {
@@ -434,6 +459,12 @@ body {
                 flex-direction: column;
                 justify-content: flex-start;
 
+                .center {
+                    .bottom-logo {
+                        height: 100%;
+                        vertical-align: middle;
+                    }
+                }
                 .red-bubble {
                     position: absolute;
                     background: #ea4235;
@@ -530,16 +561,14 @@ body {
                     &.small {
                         flex: 0 0 10%;
                     }
-
                     .step-box {
                         display: flex;
                         flex-direction: column;
-                        justify-content: space-between;
-                        width: 45%;
-                        padding: 20px;
+                        justify-content: flex-start;
+                        width: 33%;
+                        padding: 15px;
                         text-align: justify;
                         background: #ffffff1f;
-                        margin-right: 55%;
                         &.right {
                             margin-left: 55%;
                             margin-right: 0;
@@ -549,19 +578,21 @@ body {
                             text-align: left;
                             font-size: 1.3em;
                             font-weight: 600;
-                            padding-bottom: 15px;
+                            padding: 15px 0;
                         }
                         .body {
                             flex: 0 1 auto;
                         }
                         .avatar {
-                            flex: 20%;
-                            display: flex;
-                            justify-content: center;
+                            flex: 0 0 10%;
+                            border: 2px solid #ea4235;
                             padding: 15px;
-                            * {
-                                align-self: flex-end;
-                            }
+                            width: 10%;
+                            text-align: center;
+                            border-radius: 10px;
+                            font-weight: 700;
+                            font-size: 2em;
+                            color: #ea4235;
                         }
                     }
                 }

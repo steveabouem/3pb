@@ -9,6 +9,7 @@ import { UserContext } from '../helpers/contexts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Nav } from './Nav';
 import convo from '../assets/phone_shot.png';
+import { content } from '../helpers/variables';
 
 
 export const Landing = () => {
@@ -20,13 +21,13 @@ export const Landing = () => {
         setLoading(false);
     }, []);
 
-    
+
     const handleScroll = e => {
         // TODO:  toggle sidebar here
         // const tData =
         // e.target.scrollHeight <= e.target.scrollTop + e.target.clientHeight;
         // console.log("scrolling.....", divHeight, tData);
-    
+
         // if (tData) {
         //   fetchMoreListItems();
         // }
@@ -36,52 +37,90 @@ export const Landing = () => {
         <Loader />
     ) : (
             <div className={'section-wrap relative  overflow' + (scroll ? ' scrollbar' : '')} onScroll={handleScroll}>
-				<Nav />
-                <div className="red-bubble"/>
+                <Nav />
+                <div className="red-bubble" />
+                <div className="section-lane between">
+                    <div className="site-title med">
+                        <div>
+                            <div>
+                                <b><FontAwesomeIcon icon={icons.faQuoteLeft} />&nbsp;
+                                Se perdre est une autre façon d'apprendre le chemin
+                                &nbsp;<FontAwesomeIcon icon={icons.faQuoteRight} />
+                                </b>
+                                <br />
+                                (proverbe Africain)
+                            </div>
+                            <p>{content.landing.tagline}</p>
+                            <Link to={clientRoutes.mapMain}><div className="button standard white-bgb med">CRÉER VOTRE CARTE</div></Link>
+                        </div>
+                    </div>
+                    <div className="flex">
+                        <img src={convo} alt="sms-lost" />
+                    </div>
+                </div>
                 <div className="section-lane">
-                    <div className="site-title">
-                        <img src={logo} alt={logo} align="textTop" />
-                        <div className="lg"><b><FontAwesomeIcon icon={icons.faQuoteLeft}/>&nbsp;
-                            Se perdre est une autre façon d'apprendre le chemin
-                        &nbsp;<FontAwesomeIcon icon={icons.faQuoteRight}/></b><br/>(proverbe Africain)</div>
+                    <MapStep title="Étape  1" step={1} size="3x">
+                        {content.landing.step1}
+                    </MapStep>
+                    <MapStep title="Étape 2" step={2} size="3x">
+                        {content.landing.step2}
+                    </MapStep>
+                    <MapStep title="Étape 3" step={3} size="3x">
+                        {content.landing.step3}
+                    </MapStep>
+                </div>
+                <div className="inline center" style={{ height: '20%' }}>
+                    <img src={logo} alt="second-logo" className="bottom-logo" /><span>OU-T.app</span>
+                </div>
+                <div className="section-lane between">
+                    <div className="med bold">
+                        AFFAIRES: pour tous les business qui veulent faire plus de profits
                     </div>
-                    <div>
-                        <img src={convo} />
+                    <div className="med bold">
+                        INDIVIDUEL: pour tous ceux qui habitent quelque part
                     </div>
                 </div>
-                <div className="section-lane lg">
-                    <MapStep >
-                        Envie de commander un bon garba, visiter la nouvelles maison du beau-frère, ou simplement vous rendre à un rendez-vous important. 
-                        Fini les longs appels interminables et frustrant afin d’expliquer la route ou retrouver la place où vous devez vous rendre. 
-                        OU-T vous permet de faire cela en quelques clics. 
-                    </MapStep>
+                <div className="section-lane between">
+                    <ul>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                    </ul>
+                    <div className="green-line"/>
+                    <ul>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                        <li className="list-style">
+                            <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </li>
+                    </ul>
                 </div>
-                <div className="section-lane med">
-                    <MapStep title="Étape  1" icon={icons.faHandPointer} size="3x" right>
-                        Sélectionnez le point d'intérêt principal le plus proche de la destination finale(votre addresse).
-                        Ex: L’eglise St Jacques, La pharmacie de Koumassi, Le rond point Riviera 3 (9 Kilo), etc.
-
-                        Vous pouvez rechercher dans la barre de recherche ou directement sur la carte
-                        Épingler l'emplacement sur la carte.
-                        (Option pour sélectionner ou épingler un deuxième emplacement sur la carte).
-                    </MapStep>
-                </div>
-                <div className="section-lane med">
-                    <MapStep title="Étape 2" icon={icons.faDraftingCompass} size="3x">
-                        Sélectionnez l'outil de traçage (Add Image) pour commencer à dessiner la trajectoire. Commencer à dessiner à partir du premier point d'intérêt principal, jusqu’à la destination finale. 
-                        Épingler l'emplacement de la destination finale sur la carte.
-                    </MapStep>
-                </div>
-                <div className="section-lane med">
-                    <MapStep title="Étape 3" icon={icons.faKeyboard} size="3x" right>
-                        Une fois que vous êtes satisfait de votre carte, n'oubliez pas d'ajouter un titre (Ex: Maison Celestin Koffi_Rivieria 2)
-                        N’oubliez pas d'enregistrer votre carte (vous devrez vous connecter pour enregistrer votre carte)
-                        Copiez et partagez le lien.
-                    </MapStep>
-                </div>
-                <div className="section-lane center">
-                    <Link to={clientRoutes.mapMain}><div className="button large white-bgb">CRÉER VOTRE CARTE</div></Link>
-                    {/* <Link to={user ? clientRoutes.mapMain : clientRoutes.signin}><div className="button large">CREATE YOUR MAP ADDRESS</div></Link> */}
+                <div className="section-lane center ">
+                    <div className="button standard red-bg white">CRÉER UN PROFIL</div>
                 </div>
             </div>
         );
