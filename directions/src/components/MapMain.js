@@ -9,6 +9,7 @@ import { createMap, getMaps, deleteMap } from '../helpers/api';
 import { Modal } from '../common/Modals';
 import { config, mapOptions } from '../helpers/variables';
 import { CustomInfoWindow } from './CustomInfoWindow';
+import { Nav } from './Nav';
 
 export const MapMain = () => {
 	const [loading, setLoading] = useState(true);
@@ -87,77 +88,80 @@ export const MapMain = () => {
 	};
 
 	return (
-		<Formik
-			initialValues={initialValues}
-			validationSchema={validations}
-			onSubmit={() => setModal({ opened: true, type: 'confirm', action: submit })}
-		>
-			{({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-				<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchLocation, customInfo, setCustomInfo, addMarker, setModal, deleteUserMap }}>
-					<LoadScript
-						googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
-						loadingElement={Loader}
-						libraries={config.libraries}
-						onLoad={() => setLoading(false)}
-					>
-						<div className="section-wrap inline" style={{ flex: '0 1 85%', position: 'relative' }}>
-							<MapSidebar searchLocation={searchLocation} share={shareLink} submit={() => setModal({ opened: true, type: 'confirm' })} />
-							<div className="map-wrap">
-								{loading ? (
-									<Loader />
-								) : (
-										<React.Fragment>
-											{modal && modal.opened && (
-												<Modal modalType={modal?.type} cancel={() => setModal({ opened: false, type: 'confirm' })} submit={modal.action} />
-											)}
-											<GoogleMap
-												mapContainerStyle={config.style}
-												center={mapData?.center}
-												zoom={mapData?.zoom}
-												options={{ styles: mapData?.darkMode ? mapOptions : null }}
-											>
-												{customInfo?.info && <CustomInfoWindow />}
-												{mapData?.markers && mapData?.markers.length && mapData?.markers.map((m, i) => (
-													<React.Fragment key={`marker-${i}`}>
-														<Marker
-															position={m}
-														/>
-													</React.Fragment>
-												))}
-												<Polyline
-													options={{
-														visible: true,
-														editable: true,
-														controls: ['LineString', 'Polygon'],
-														strokeColor: 'purple',
-														strokeOpacity: 1,
-														strokeWeight: 5,
-														path: mapData && mapData.polylinePath ? mapData.polylinePath : []
-													}}
-												/>
-												<DrawingManager
-													onMarkerComplete={m => addMarker(m)}
-													options={{
-														drawingMode: mapData?.drawingMode,
-														polylineOptions: {
-															controls: ['Point', 'LineString', 'Polygon'],
-															fillColor: "red",
+		<React.Fragment>
+			<Nav />
+			<Formik
+				initialValues={initialValues}
+				validationSchema={validations}
+				onSubmit={() => setModal({ opened: true, type: 'confirm', action: submit })}
+			>
+				{({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
+					<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchLocation, customInfo, setCustomInfo, addMarker, setModal, deleteUserMap }}>
+						<LoadScript
+							googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
+							loadingElement={Loader}
+							libraries={config.libraries}
+							onLoad={() => setLoading(false)}
+						>
+							<div className="section-wrap inline" style={{ flex: '0 1 85%', position: 'relative' }}>
+								<MapSidebar searchLocation={searchLocation} share={shareLink} submit={() => setModal({ opened: true, type: 'confirm' })} />
+								<div className="map-wrap">
+									{loading ? (
+										<Loader />
+									) : (
+											<React.Fragment>
+												{modal && modal.opened && (
+													<Modal modalType={modal?.type} cancel={() => setModal({ opened: false, type: 'confirm' })} submit={modal.action} />
+												)}
+												<GoogleMap
+													mapContainerStyle={config.style}
+													center={mapData?.center}
+													zoom={mapData?.zoom}
+													options={{ styles: mapData?.darkMode ? mapOptions : null }}
+												>
+													{customInfo?.info && <CustomInfoWindow />}
+													{mapData?.markers && mapData?.markers.length && mapData?.markers.map((m, i) => (
+														<React.Fragment key={`marker-${i}`}>
+															<Marker
+																position={m}
+															/>
+														</React.Fragment>
+													))}
+													<Polyline
+														options={{
+															visible: true,
+															editable: true,
+															controls: ['LineString', 'Polygon'],
 															strokeColor: 'purple',
 															strokeOpacity: 1,
-															strokeWeight: 5
-														}
-													}}
-													onPolylineComplete={savePath}
-												/>
-											</GoogleMap>
-										</React.Fragment>
-									)}
+															strokeWeight: 5,
+															path: mapData && mapData.polylinePath ? mapData.polylinePath : []
+														}}
+													/>
+													<DrawingManager
+														onMarkerComplete={m => addMarker(m)}
+														options={{
+															drawingMode: mapData?.drawingMode,
+															polylineOptions: {
+																controls: ['Point', 'LineString', 'Polygon'],
+																fillColor: "red",
+																strokeColor: 'purple',
+																strokeOpacity: 1,
+																strokeWeight: 5
+															}
+														}}
+														onPolylineComplete={savePath}
+													/>
+												</GoogleMap>
+											</React.Fragment>
+										)}
+								</div>
 							</div>
-						</div>
-					</LoadScript>
-				</MapsContext.Provider>
-			)}
-		</Formik>
+						</LoadScript>
+					</MapsContext.Provider>
+				)}
+			</Formik>
+		</React.Fragment>
 	);
 };
 
