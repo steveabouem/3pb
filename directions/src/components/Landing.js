@@ -53,9 +53,9 @@ export const Landing = () => {
                             <p>{content.landing.tagline}</p>
                             <Link to={clientRoutes.mapMain}><div className="button standard white-bgb med">CRÉER VOTRE CARTE</div></Link>
                         </div>
-                    </div>
+                    </div><br />
                     <div className="flex">
-                        <img src={convo} alt="sms-lost" />
+                        <img src={convo} alt="sms-lost" className="top-logo"/>
                     </div>
                 </div>
                 <div className="section-lane">
@@ -70,7 +70,7 @@ export const Landing = () => {
                     </MapStep>
                 </div>
                 <div className="inline center" style={{ height: '20%' }}>
-                    <img src={logo} alt="second-logo" className="bottom-logo" /><span>OU-T.app</span>
+                    <img src={logo} alt="second-logo" className="bottom-logo" /><div>OU-T.app</div>
                 </div>
                 <div className="section-lane between">
                     <div className="med bold">
@@ -80,7 +80,7 @@ export const Landing = () => {
                         INDIVIDUEL: pour tous ceux qui habitent quelque part
                     </div>
                 </div>
-                <div className="section-lane between">
+                <div className="section-lane between gradient">
                     <ul>
                         <li className="list-style">
                             <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
@@ -120,7 +120,7 @@ export const Landing = () => {
                     </ul>
                 </div>
                 <div className="section-lane center ">
-                    <div className="button standard red-bg white">CRÉER UN PROFIL</div>
+                    <div className="button standard red-bg white pointer">CRÉER UN PROFIL</div>
                 </div>
             </div>
         );
