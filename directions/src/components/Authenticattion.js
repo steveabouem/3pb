@@ -66,7 +66,7 @@ export const Authentication = () => {
                     validationSchema={valiations}
                 >
                     {({ touched, errors, values, submitForm, isValid, isSubmitting, resetForm }) => (
-                        <div className="section-wrap center flex gradient reveal">
+                        <div className="section-wrap center flex  reveal">
                             <div className="bg-overlay"/>
                             <div className="form-bg column white-bg">
                                 <div className="curved-bg-element top"/>

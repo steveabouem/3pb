@@ -38,27 +38,26 @@ export const Landing = () => {
     ) : (
             <div className={'section-wrap relative  overflow' + (scroll ? ' scrollbar' : '')} onScroll={handleScroll}>
                 <Nav />
-                <div className="red-bubble" />
+                {/* <div className="red-bubble"><FontAwesomeIcon icon={icons.faSquare}/></div> */}
                 <div className="section-lane between">
                     <div className="site-title med">
-                        <div>
+                        <div className="tagline">
                             <div>
                                 <b><FontAwesomeIcon icon={icons.faQuoteLeft} />&nbsp;
                                 Se perdre est une autre façon d'apprendre le chemin
                                 &nbsp;<FontAwesomeIcon icon={icons.faQuoteRight} />
                                 </b>
-                                <br />
-                                (proverbe Africain)
+                                <div>(proverbe Africain)</div>
                             </div>
                             <p>{content.landing.tagline}</p>
                             <Link to={clientRoutes.mapMain}><div className="button standard white-bgb med">CRÉER VOTRE CARTE</div></Link>
                         </div>
-                    </div><br />
-                    <div className="flex">
+                    </div>
+                    <div className="top-logo-wrap">
                         <img src={convo} alt="sms-lost" className="top-logo"/>
                     </div>
                 </div>
-                <div className="section-lane">
+                <div className="section-lane media-column">
                     <MapStep title="Étape  1" step={1} size="3x">
                         {content.landing.step1}
                     </MapStep>

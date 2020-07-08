@@ -3,6 +3,11 @@ body {
     #App {
         padding: 25px;
     }
+    .media-column {
+        @media only screen and (max-width: 640px) {
+            flex-direction: column;
+        }
+    }
     * {
         transition: 0.3s;
         font-family: "Quicksand", sans-serif;
@@ -63,10 +68,14 @@ body {
         left: 0;
         top: 0;
         height: 35px;
-        width: 335px;
+        width: 80%;
         padding: 15px 0 15px 30px;
         color: grey;
         border-radius: 15px;
+
+        @media only screen and (max-width: 640px) {
+            width: 66%;
+         }
     }
     #sidebar-toggle {
         position: absolute;
@@ -89,12 +98,21 @@ body {
     // COMMON CLASSES_______
     .reg {
         font-size: 15px;
+        @media only screen and (max-width: 640px) {
+            font-size: 12px;
+         }
     }
     .med {
         font-size: 18px;
+        @media only screen and (max-width: 640px) {
+            font-size: 15px;
+         }
     }
     .lg {
         font-size: 25px;
+        @media only screen and (max-width: 640px) {
+            font-size: 20px;
+         }
     }
     .bold {
         font-weight: bold;
@@ -143,7 +161,10 @@ body {
             background: white;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;;
+            justify-content: space-between;
+            @media only screen and (max-width: 640px) {
+                width: 80%;
+             }
             .title {
                 font-size: 1.2em;
                 font-weight: 600;
@@ -214,7 +235,7 @@ body {
         padding: 15px;
         overflow: hidden;
         border: 1px solid;
-        width: 25%;
+        width: auto;
         height: 75%;
         .curved-bg-element {
             position: absolute;
@@ -308,9 +329,18 @@ body {
         color: #6d6d6d;
         flex: 0 1 50%;
         text-align: left;
+
+        @media only screen and (max-width: 640px) {
+            flex: 1;
+            .tagline {
+                .button {
+                    width: 60%;
+                }
+            }
+         }
         .button {
             width: 35%;
-            background: #ffbb00;
+            background: #ea4235;
             color: white;
             &:hover {
                 background: black;
@@ -344,7 +374,7 @@ body {
     .icon {
         &.pointer {
             &:hover, &.active {
-                color: black;
+                color: #ea4235;
                 transform: scale(1.1);
                 transition: .3s;
             }
@@ -365,11 +395,11 @@ body {
         appearance: none;
         width: 100%;
         height: 5px;
-        background: black;
+        background: #ea4235;
         outline: none;
         opacity: 0.7;
         transition: opacity .2s;
-        border: 1px solid #ea4235;
+        border: 1px solid;
         border-radius: 10px;
         padding: 1%;
         &:hover {
@@ -478,10 +508,14 @@ body {
                     text-align: left;
                     top: 12%;
                     animation: reveal .5s linear;
-                    width: 365px;
+                    width: 26%;
                     left: 1%;
                     overflow: hidden scroll;
                     background: transparent;
+
+                    @media only screen and (max-width: 640px) {
+                        width: 70%;
+                     }
                     .sidebar-row {
                         display: inline-flex;
                         align-items: center;
@@ -560,8 +594,14 @@ body {
                     &.small {
                         flex: 0 0 10%;
                     }
-                    .top-logo {
-                        width: 70%;
+                    .top-logo-wrap {
+                        @media only screen and (max-width: 640px) {
+                            display: none;
+                            width: 0;
+                         }
+                        .top-logo {
+                            width: 70%;
+                        }
                     }
                     .step-box {
                         display: flex;
@@ -571,6 +611,9 @@ body {
                         padding: 15px;
                         text-align: justify;
                         background: #ffffff1f;
+                        @media only screen and (max-width: 640px) {
+                            width: auto;
+                        }
                         &.right {
                             margin-left: 55%;
                             margin-right: 0;
@@ -650,5 +693,54 @@ body {
 
     to {
        transform: none;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    body {
+        .media-column {
+            flex-direction: column;
+        }
+        #autocomplete-field {
+            width: 66%;
+        }
+        .reg {
+            font-size: 12px;
+        }
+        .med {
+            font-size: 15px;
+        }
+        .lg {
+            font-size: 20px;
+        }
+        .modal-wrap {
+            .modal {
+                width: 80%;
+            }
+        }
+        .site-title {
+            flex: 1;
+            .tagline {
+                .button {
+                    width: 60%;
+                }
+            }
+        }
+        #root {
+            .App {
+                .sidebar {
+                    width: 70%;
+                    .section-lane {
+                        .top-logo-wrap {
+                            display: none;
+                            width: 0;
+                        }
+                        .step-box {
+                            width: auto;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -43,19 +43,19 @@ export const MapSidebar = ({ ...props }) => {
                         </div>
                         <FontAwesomeIcon 
                             icon={icons.faMapMarkedAlt} data-tip="" data-for="type-marker" 
-                            className={'icon pointer' + (mapData?.drawingMode === modes.marker ? ' active' : '')} 
+                            className={'icon pointer' + (mapData?.drawingMode === modes.marker ? ' red active' : '')} 
                             onClick={() =>setMapData({...mapData, drawingMode: modes.marker})}
                         />
                         <FontAwesomeIcon 
-                            icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (mapData?.drawingMode === modes.polyline ? ' active' : '')}
+                            icon={icons.faDraftingCompass} data-tip="" data-for="type-polyline" className={'icon pointer' + (mapData?.drawingMode === modes.polyline ? ' red active' : '')}
                             onClick={() =>setMapData({...mapData, drawingMode: modes.polyline})}
                         />
                         <FontAwesomeIcon 
                             icon={icons.faHandPointer} data-tip="" data-for="type-default" 
-                            className={'icon pointer' + (!mapData?.drawingMode ? ' active' : '')} onClick={() =>setMapData({...mapData, drawingMode: null})}
+                            className={'icon pointer' + (!mapData?.drawingMode ? ' red active' : '')} onClick={() =>setMapData({...mapData, drawingMode: null})}
                         />
                         <FontAwesomeIcon 
-                            icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData?.darkMode ? ' active' : '')} 
+                            icon={icons.faMoon} data-tip="" data-for="dark-mode" className={'icon pointer' + (mapData?.darkMode ? ' red active' : '')} 
                             onClick={() =>setMapData({...mapData, darkMode: !mapData?.darkMode})}
                         />
                         <Slider min="1" max="20" val={mapData.zoom} tip="Zoom"/>

@@ -56,7 +56,7 @@ export const MapMain = () => {
 	const shareLink = () => {
 	};
 
-	const submit = () => {
+	const saveMap = () => {
 		setLoading(true);
 
 		createMap(mapData)
@@ -70,21 +70,20 @@ export const MapMain = () => {
 			});
 	};
 
-	const deleteUserMap = () => {
+	const deleteUserMap = id => {
 		setLoading(true);
-		console.log({ modal });
 
-		// deleteMap(modal?.params)
-		//   .then(() => {
-		//     setLoading(false);
-		//     setModal({ opened: true, type: 'success'});
-		//   })
-		//   .catch( e => {
-		//     console.log({e});
+		deleteMap(id)
+		  .then(() => {
+		    setLoading(false);
+		    setModal({ opened: true, type: 'success'});
+		  })
+		  .catch( e => {
+		    console.log({e});
 
-		//     setModal({ opened: true, type: 'error'});
-		//     setLoading(false);
-		//   });
+		    setModal({ opened: true, type: 'error'});
+		    setLoading(false);
+		  });
 	};
 
 	return (
@@ -93,10 +92,10 @@ export const MapMain = () => {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validations}
-				onSubmit={() => setModal({ opened: true, type: 'confirm', action: submit })}
+				onSubmit={() => setModal({ opened: true, type: 'confirm'})}
 			>
 				{({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-					<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchLocation, customInfo, setCustomInfo, addMarker, setModal, deleteUserMap }}>
+					<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchLocation, customInfo, setCustomInfo, addMarker, setModal, deleteUserMap, saveMap }}>
 						<LoadScript
 							googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
 							loadingElement={Loader}
