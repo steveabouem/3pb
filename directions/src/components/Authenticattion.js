@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { icons } from '../common/icons';
-import { signup } from '../helpers/api';
 import { createUser } from '../helpers/api';
 import { Loader } from '../common/Loader';
+import { Nav } from './Nav';
+import { UserContext } from '../helpers/contexts';
 
 export const Authentication = () => {
+    const {auth, user} = useContext(UserContext);
+
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const history = useHistory();
@@ -21,38 +22,42 @@ export const Authentication = () => {
     });
 
     const submit = (values, actions) => {
-        alert('Activation à la phase 2');
-        actions.resetForm();
-        actions.setSubmitting(false);
-        // setLoading(true);
-        // actions.setSubmitting(true);
+        setLoading(true);
+        actions.setSubmitting(true);
         
-        // if (values.conf_password && values.conf_password !== values.password) {
-        //     actions.setErrors({conf_password: 'not matching'});
-        //     actions.setSubmitting(false);
-        //     setLoading(false);
-        //     return;
-        // } else if (isSigningIn) {
-
-        // } else {
-        //     signup(values)
-        //         .then(() => {
-        //             createUser(values);
-        //         })
-        //         .then(data => {
-        //             setLoading(false);
-        //             history.push('/map');
-        //         })
-        //         .catch(e => {
-        //             actions.setSubmitting(false);
-        //             setLoading(false);
-        //             console.log({e});
-        //         });
-        // }
+        if (values.conf_password && values.conf_password !== values.password) {
+            actions.setErrors({conf_password: 'not matching'});
+            actions.setSubmitting(false);
+            setLoading(false);
+            return;
+        } else if (isSigningIn) {
+            auth.signInWithEmailAndPassword(values.email, values.password)
+                .then( r => {
+                    actions.setSubmitting(false);
+                    setLoading(false);
+                    history.push('/map');
+                })
+                .catch(e => {
+                    actions.setSubmitting(false);
+                    setLoading(false);
+                }); 
+        } else {
+            auth.createUserWithEmailAndPassword(values.email, values.password)
+                .then(r => {
+                    createUser(r);
+                    history.push('/map');
+                })
+                .catch(e => {
+                    actions.setSubmitting(false);
+                    setLoading(false);
+                    console.log({e});
+                });
+        }
     };
 
     return (
         <div className="section-wrap flex reveal">
+            <Nav />
             {loading ? (
                 <Loader/>
             ) : (
@@ -66,36 +71,36 @@ export const Authentication = () => {
                     validationSchema={valiations}
                 >
                     {({ touched, errors, values, submitForm, isValid, isSubmitting, resetForm }) => (
-                        <div className="section-wrap center flex  reveal">
-                            <div className="bg-overlay"/>
+                        <div className="section-wrap flex align-center reveal">
                             <div className="form-bg column white-bg">
-                                <div className="curved-bg-element top"/>
+                                {/* <div className="curved-bg-element top"/>
                                 <div className="curved-bg-element middle"/>
-                                <div className="curved-bg-element bottom"/>
-                                <div className="section-lane over">
+                                <div className="curved-bg-element bottom"/> */}
+                                <div className="section-lane">
                                     <label className="strong">Email</label>
                                 </div>
-                                <div className="section-lane over">
+                                <div className="section-lane">
                                     <Field name="email" className={'rounded-field' + (errors.email && touched.email ? ' invalid' : '')} />
                                 </div>
-                                <div className="section-lane over">
+                                <div className="section-lane">
                                     <label className="strong">Mot de passe</label>
                                 </div>
-                                <div className="section-lane over">
+                                <div className="section-lane">
                                     <Field name="password" type="password" className={'rounded-field' + (errors.password && touched.password ? ' invalid' : '')} />
                                 </div>
                                 {!isSigningIn && (
                                     <React.Fragment>
-                                        <div className="section-lane over">
+                                        <div className="section-lane">
                                             <label className="strong">Confirmer mot de passe</label>
                                         </div>
-                                        <div className="section-lane over">
+                                        <div className="section-lane">
                                             <Field name="conf_password" type="password" className={'rounded-field' + (errors.conf_password && touched.conf_password ? ' invalid' : '')} />
                                         </div>
                                     </React.Fragment>
                                 )}
-                                <div className="section-lane over">
-                                    <FontAwesomeIcon className={'icon' + (!isValid ? ' inactive' : ' pointer')} icon={icons.faPlay} onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}/>
+                                <div className="section-lane start">
+                                    <div className="button" onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}>{isSigningIn ? 'Connectez-vous' : 'Enregistrez-vous'}</div>
+                                    {/* <FontAwesomeIcon className={'icon' + (!isValid ? ' inactive' : ' pointer')} icon={icons.faPlay} onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}/> */}
                                 </div>
                             </div>
                         </div>

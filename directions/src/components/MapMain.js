@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, DrawingManager, Polyline, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DrawingManager, Polyline, Marker, DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -14,7 +14,7 @@ import { Nav } from './Nav';
 export const MapMain = () => {
 	const [loading, setLoading] = useState(true);
 	//ADIDJAN
-	const [mapData, setMapData] = useState({ center: { lat: 5.30966, lng: -4.01266 }, zoom: 14, drawingMode: null, darkMode: false, markers: [] });
+	const [mapData, setMapData] = useState({ center: { lat: 5.30966, lng: -4.01266 }, zoom: 14, drawingMode: null, darkMode: false, markers: [], destination: null });
 	const [placesData, setPlacesData] = useState({});
 	const [userMaps, setUserMaps] = useState([]);
 	const [modal, setModal] = useState({ opened: false, type: '' });
@@ -37,8 +37,14 @@ export const MapMain = () => {
 		updateMapList();
 	}, [loading]);
 
-	const searchLocation = () => {
+	const searchOrigin = () => {
 		let result = placesData?.getPlace().geometry.location;
+		setMapData({ ...mapData, zoom: 18, center: { lat: result.lat(), lng: result.lng() } });
+		setCustomInfo({ ...customInfo, info: true });
+	};
+
+	const searchDestination = d => {
+		let result = d?.getPlace().geometry.location;
 		setMapData({ ...mapData, zoom: 18, center: { lat: result.lat(), lng: result.lng() } });
 		setCustomInfo({ ...customInfo, info: true });
 	};
@@ -46,7 +52,7 @@ export const MapMain = () => {
 	const addMarker = m => {
 		let markers = mapData.markers;
 		markers.push(m.position);
-		setMapData({ ...mapData, markers });
+		setMapData({ ...mapData, markers, zoom: 15 });
 	};
 
 	const savePath = polyline => {
@@ -95,7 +101,7 @@ export const MapMain = () => {
 				onSubmit={() => setModal({ opened: true, type: 'confirm'})}
 			>
 				{({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-					<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchLocation, customInfo, setCustomInfo, addMarker, setModal, deleteUserMap, saveMap }}>
+					<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchOrigin, searchDestination, customInfo, setCustomInfo, addMarker, setModal, deleteUserMap, saveMap }}>
 						<LoadScript
 							googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
 							loadingElement={Loader}
@@ -103,7 +109,7 @@ export const MapMain = () => {
 							onLoad={() => setLoading(false)}
 						>
 							<div className="section-wrap inline" style={{ flex: '0 1 85%', position: 'relative' }}>
-								<MapSidebar searchLocation={searchLocation} share={shareLink} submit={() => setModal({ opened: true, type: 'confirm' })} />
+								<MapSidebar searchOrigin={searchOrigin} share={shareLink} submit={() => setModal({ opened: true, type: 'confirm' })} />
 								<div className="map-wrap">
 									{loading ? (
 										<Loader />
@@ -117,6 +123,7 @@ export const MapMain = () => {
 													center={mapData?.center}
 													zoom={mapData?.zoom}
 													options={{ styles: mapData?.darkMode ? mapOptions : null }}
+													onLoad={m => setMapData({...mapData, gMap: m})}
 												>
 													{customInfo?.info && <CustomInfoWindow />}
 													{mapData?.markers && mapData?.markers.length && mapData?.markers.map((m, i) => (
@@ -126,6 +133,20 @@ export const MapMain = () => {
 															/>
 														</React.Fragment>
 													))}
+													{mapData && mapData.gmap && (
+														<DirectionsService
+															options={{
+																origin: mapData?.center,
+																destination: mapData?.destination,
+																travelMode: 'WALKING'
+															}}
+															callback={res => setMapData({...mapData, directionsObject: res})}
+														>
+															<DirectionsRenderer 
+																options={mapData?.directionsObject}
+															/>
+														</DirectionsService>
+													)}
 													<Polyline
 														options={{
 															visible: true,

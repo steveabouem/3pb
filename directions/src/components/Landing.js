@@ -38,7 +38,6 @@ export const Landing = () => {
     ) : (
             <div className={'section-wrap relative  overflow' + (scroll ? ' scrollbar' : '')} onScroll={handleScroll}>
                 <Nav />
-                {/* <div className="red-bubble"><FontAwesomeIcon icon={icons.faSquare}/></div> */}
                 <div className="section-lane between">
                     <div className="site-title med">
                         <div className="tagline">
@@ -58,13 +57,13 @@ export const Landing = () => {
                     </div>
                 </div>
                 <div className="section-lane media-column">
-                    <MapStep title="Étape  1" step={1} size="3x">
+                    <MapStep title="Étape  1: Sélectionnez" step={1} size="3x">
                         {content.landing.step1}
                     </MapStep>
-                    <MapStep title="Étape 2" step={2} size="3x">
+                    <MapStep title="Étape 2: Dessinez" step={2} size="3x">
                         {content.landing.step2}
                     </MapStep>
-                    <MapStep title="Étape 3" step={3} size="3x">
+                    <MapStep title="Étape 3: Enregistrez" step={3} size="3x">
                         {content.landing.step3}
                     </MapStep>
                 </div>
@@ -119,7 +118,9 @@ export const Landing = () => {
                     </ul>
                 </div>
                 <div className="section-lane center ">
-                    <div className="button standard red-bg white pointer">CRÉER UN PROFIL</div>
+                    <Link to="/signup">
+                        <div className="button standard red-bg white pointer">CRÉER UN PROFIL</div>
+                    </Link>
                 </div>
             </div>
         );

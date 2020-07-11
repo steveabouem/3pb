@@ -33,6 +33,10 @@ export const Nav = () => {
 					</div>
 				) : null}
 				<div className="nav-section">
+					{/* <Link className="nav-links" to="/">Accueil</Link>
+					<Link className="nav-links" to="/x">Forfaits</Link>
+					<Link className="nav-links" to="/x">Contact</Link>
+					<Link className="nav-links" to="/x">A Propos</Link> */}
 					{user ? (
 						<React.Fragment>
 							<div className="username">{user.email}</div>

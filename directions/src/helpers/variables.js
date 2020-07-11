@@ -1,7 +1,7 @@
 export const mapStyles = {
     main: { height: '100%', width: '100%', flex: 1, alignSelf: 'center', position: 'relative', overflow: 'hidden' },
     searchOrigin: { height: '70px', width: '370px', position: 'absolute', left: '1%', top: '1%' },
-    searchDestination: {},
+    searchDestination: { height: '70px', width: '370px', position: 'absolute', left: '1%', top: '75px', zIndex: 1000, display: 'inherit' },
     marker: {}
 };
 
@@ -11,7 +11,13 @@ export const config = {
     libraries: ['drawing', 'places'],
     style: mapStyles.main,
     types: ['geocode', 'cities'],
-    fields: ['name']
+    fields: ['name'],
+    directions: {
+        origin: '' /*LatLng | String | google.maps.Place*/,
+        destination: '' /*LatLng | String | google.maps.Place*/,
+        travelMode: '',
+        // unitSystem: UnitSystem,
+      }
 };
 
 export const mapOptions = [

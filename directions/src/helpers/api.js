@@ -1,7 +1,5 @@
 import axios from 'axios';
 import firebase from 'firebase';
-require('firebase/auth');
-require('firebase/firestore');
 
 firebase.initializeApp({
     apiKey: "AIzaSyC6lDSvf4qLRsI6v5nnl0A8phsl1jfeoLo",
@@ -16,11 +14,8 @@ const baseURL = 'https://us-central1-mapdraw-6684b.cloudfunctions.net';
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
-export const loadMap = () => axios.get(baseURL + '/hello');
-export const signup = ({email, password}) => firebase.auth().createUserWithEmailAndPassword(email, password);
-export const signin = ({email, password}) => firebase.auth().createUserWithEmailAndPassword(email, password);
-export const createUser = (values) => axios.post(baseURL + '/createUser', {"content-type": "application/json" }, {data: values});
-export const getUser = (email) => axios.post(baseURL + '/getUser', {"content-type": "application/json" }, {data: {email}});
+export const createUser = (user) => axios.post(baseURL + '/createUser', {"content-type": "application/json" }, {data: user});
+export const getUser = (user) => axios.post(baseURL + '/getUser', {"content-type": "application/json" }, {data: {email: user.email}});
 export const getMaps = () => axios.get(baseURL + '/getMaps');
 export const createMap = (mapData) => axios.post(baseURL + '/createMap', {"content-type": "application/json" }, {data: mapData});
 export const deleteMap = (id) => axios.post(baseURL + '/deleteMap', {"content-type": "application/json" }, {data: id});
