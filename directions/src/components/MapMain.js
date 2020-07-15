@@ -72,7 +72,6 @@ export const MapMain = () => {
 				setModal({ opened: true, type: 'success' });
 			})
 			.catch(e => {
-				console.log('create', e);
 				setLoading(false);
 				setModal({ opened: true, type: 'error' });
 			});
@@ -87,8 +86,6 @@ export const MapMain = () => {
 		    setModal({ opened: true, type: 'success'});
 		  })
 		  .catch( e => {
-		    console.log({e});
-
 		    setModal({ opened: true, type: 'error'});
 		    setLoading(false);
 		  });

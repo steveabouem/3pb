@@ -5,8 +5,6 @@ export const Modal = ({modalType, cancel}) => {
     const {saveMap, deleteUserMap, modal} = useContext(MapsContext);
     
     const submit = () => {
-        console.log(modal);
-        
         if (modalType === 'confirm') {
             saveMap();
         } else {
