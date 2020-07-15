@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, LoadScript, DrawingManager, Polyline, Marker, DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
 import { Loader } from '../common/Loader';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { MapSidebar } from './MapSidebar';
-import { MapsContext } from '../helpers/contexts';
+import { MapsContext, UserContext } from '../helpers/contexts';
 import { createMap, getMaps, deleteMap } from '../helpers/api';
 import { Modal } from '../common/Modals';
 import { config, mapOptions } from '../helpers/variables';
@@ -12,9 +12,10 @@ import { CustomInfoWindow } from './CustomInfoWindow';
 import { Nav } from './Nav';
 
 export const MapMain = () => {
+	const {user} = useContext(UserContext);
 	const [loading, setLoading] = useState(true);
 	//ADIDJAN
-	const [mapData, setMapData] = useState({ center: { lat: 5.30966, lng: -4.01266 }, zoom: 14, drawingMode: null, darkMode: false, markers: [], destination: null });
+	const [mapData, setMapData] = useState({ email: user && user.email ? user.email : 's@t.com', center: { lat: 5.30966, lng: -4.01266 }, zoom: 14, drawingMode: null, darkMode: false, markers: [], destination: null });
 	const [placesData, setPlacesData] = useState({});
 	const [userMaps, setUserMaps] = useState([]);
 	const [modal, setModal] = useState({ opened: false, type: '' });
@@ -71,6 +72,7 @@ export const MapMain = () => {
 				setModal({ opened: true, type: 'success' });
 			})
 			.catch(e => {
+				console.log('create', e);
 				setLoading(false);
 				setModal({ opened: true, type: 'error' });
 			});
@@ -101,10 +103,9 @@ export const MapMain = () => {
 				onSubmit={() => setModal({ opened: true, type: 'confirm'})}
 			>
 				{({ values, errors, touched, isValid, submitForm, setFieldValue }) => (
-					<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchOrigin, searchDestination, customInfo, setCustomInfo, addMarker, setModal, deleteUserMap, saveMap }}>
+					<MapsContext.Provider value={{ mapData, setMapData, userMaps, setPlacesData, searchOrigin, searchDestination, customInfo, setCustomInfo, addMarker, setModal, modal, deleteUserMap, saveMap }}>
 						<LoadScript
 							googleMapsApiKey="AIzaSyBcy57cjOpe23IqdeOr1apjP--uab3S5Hg"
-							loadingElement={Loader}
 							libraries={config.libraries}
 							onLoad={() => setLoading(false)}
 						>
@@ -123,7 +124,6 @@ export const MapMain = () => {
 													center={mapData?.center}
 													zoom={mapData?.zoom}
 													options={{ styles: mapData?.darkMode ? mapOptions : null }}
-													onLoad={m => setMapData({...mapData, gMap: m})}
 												>
 													{customInfo?.info && <CustomInfoWindow />}
 													{mapData?.markers && mapData?.markers.length && mapData?.markers.map((m, i) => (

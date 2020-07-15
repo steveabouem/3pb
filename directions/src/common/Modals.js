@@ -1,18 +1,16 @@
 import React, { useContext } from 'react';
 import { MapsContext } from '../helpers/contexts';
-import { useLocation } from 'react-router-dom';
 
 export const Modal = ({modalType, cancel}) => {
-    const {saveMap, deleteUserMap} = useContext(MapsContext);
-
-    const location = useLocation();
-    const id = location.pathname.split('/')[2];
-
+    const {saveMap, deleteUserMap, modal} = useContext(MapsContext);
+    
     const submit = () => {
+        console.log(modal);
+        
         if (modalType === 'confirm') {
             saveMap();
         } else {
-            deleteUserMap(id);
+            deleteUserMap(modal.id);
         }
     };
     

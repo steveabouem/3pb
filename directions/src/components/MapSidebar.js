@@ -1,23 +1,23 @@
 import React, { useState, useContext } from 'react';
 import { useFormikContext, Field } from 'formik';
-import { GoogleMap, Autocomplete } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { icons } from '../common/icons';
 import ReactTooltip from 'react-tooltip';
+import { NavLink } from 'react-router-dom';
+import { icons } from '../common/icons';
 import { MapTitle } from './MapTitle';
 import { MapsContext } from '../helpers/contexts';
-import { modes, mapOptions, mapStyles } from '../helpers/variables';
+import { modes } from '../helpers/variables';
 import { Slider } from '../common/Slider';
-import { NavLink } from 'react-router-dom';
 import { Collapse } from './Collapse';
 
 export const MapSidebar = ({ ...props }) => {
     const { values, errors, touched, setFieldValue } = useFormikContext();
-    const { setMapData, mapData, userMaps, searchOrigin, searchDestination, placesData, setPlacesData, setModal, deleteUserMap } = useContext(MapsContext);
-    const [sidebar, setSidebar] = useState(true);
+    const { setMapData, mapData, userMaps, searchOrigin, searchDestination, setPlacesData, setModal, deleteUserMap } = useContext(MapsContext);
+    // const [sidebar, setSidebar] = useState(true);
     const [destination, setDestination] = useState(null);
 
-    const toggleSideBar = () => setSidebar(!sidebar);
+    // const toggleSideBar = () => setSidebar(!sidebar);
 
     return (
         <div className="sidebar left">
@@ -33,9 +33,6 @@ export const MapSidebar = ({ ...props }) => {
                             onPlaceChanged={searchOrigin}
                         >
                             <React.Fragment>
-                                {/* <div className="field-icon-wrap">
-                                    <FontAwesomeIcon icon={icons.faBars} id="sidebar-toggle" onClick={toggleSideBar} />
-                                </div> */}
                                 <Field value={values?.stop1} className="rounded-field" />
                             </React.Fragment>
                         </Autocomplete>
@@ -109,7 +106,7 @@ export const MapSidebar = ({ ...props }) => {
                                 </NavLink>
                                 <FontAwesomeIcon
                                     icon={icons.faTrashAlt} className="map-item pointer flex"
-                                    onClick={() => setModal({ opened: true, type: 'delete', action: deleteUserMap, params: m.id })}
+                                    onClick={() => setModal({ opened: true, type: 'delete', action: deleteUserMap, id: m.id})}
                                 />
                             </div>
                         </div>

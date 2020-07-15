@@ -18,4 +18,4 @@ export const createUser = (user) => axios.post(baseURL + '/createUser', {"conten
 export const getUser = (user) => axios.post(baseURL + '/getUser', {"content-type": "application/json" }, {data: {email: user.email}});
 export const getMaps = () => axios.get(baseURL + '/getMaps');
 export const createMap = (mapData) => axios.post(baseURL + '/createMap', {"content-type": "application/json" }, {data: mapData});
-export const deleteMap = (id) => axios.post(baseURL + '/deleteMap', {"content-type": "application/json" }, {data: id});
+export const deleteMap = (id) => axios.post(baseURL + '/deleteMap', {"content-type": "application/json" }, {data: {id}});

@@ -500,10 +500,14 @@ body {
                     padding: 1% 0;
 
                     .nav-section {
-                        flex: 0 1 auto;
+                        flex: 1;
                         display: inline-flex;
                         align-items: center;
-
+                        justify-content: flex-end;
+                        padding: 10px;
+                        a {
+                            margin-left: 10px;
+                        }
                         .nav-links {
                             padding: 10px;
                             &:hover {

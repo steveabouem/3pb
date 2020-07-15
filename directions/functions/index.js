@@ -11,12 +11,24 @@ const db = admin.firestore();
 let users = db.collection("users"),
 maps = db.collection('maps');
 
-exports.helloWorld = functions.https.onRequest((req, res) => {
-    cors(req, res, () => {
-        res.send ('Hello Dylan');
-
-    });
+// HELPERS
+exports.retrieveUserByEmail = functions.https.onCall((email) => {
+    users.where("email", "==", email).get()
+        .then(snapshot =>  {
+            let matches = [];
+            // look up why you can't just call snapshot[0].data()
+            snapshot.forEach(doc => {
+                matches.push(doc.data());
+            })
+            return matches[0];
+        })
+        .catch(e => {
+            console.log({e});
+            return;
+        });
 });
+
+
 
 //SECTION USER 
 
@@ -25,12 +37,13 @@ exports.createUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const {user} = req.body;
         const id = uuidv4();
+        const userObject = {email: user.email,  created: moment(), maps: [], imageUrl: null};
 
-        users.doc(id).set({email: user.email,  created: moment(), maps: [], imageUrl: null, id})
+        users.doc(id).set({...userObject, id})
         .then(() => {
             users.doc(id).get().then(function(doc) {
                 if (doc.exists) {
-                    res.send(doc.data());
+                    res.send(userObject);
                 } else {
                     res.send('None found');
                 }
@@ -44,16 +57,20 @@ exports.createUser = functions.https.onRequest((req, res) => {
 
 exports.getUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const {email} = req.body;
-        users.where('email', '==', email).get().then(function(doc) {
-            if (doc.exists) {
-                res.send({code: 200, data: doc.data()});
-            } else {
-                res.send({code: 200, data: null});
-            }
-        }).catch(function(error) {
-            res.send({code: 500, data: error});
-        });
+        const email = req.body.email;
+        users.where("email", "==", email).get()
+            .then(snapshot =>  {
+                let matches = [];
+                // look up why you can't just call snapshot[0].data()
+                snapshot.forEach(doc => {
+                    matches.push(doc.data());
+                })
+
+                res.send({code: 200, data:matches[0]});
+            }).catch(function(error) {
+                console.log({error});
+                res.send({code: 500, data: error});
+            });
     });
 
 });
@@ -77,21 +94,38 @@ exports.deleteUser = functions.https.onRequest((req, res) => {
 exports.createMap = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const id = uuidv4();
-        const {userId} = req.body;
+        const email = req.body.email;
+        
+        users.where("email", "==", email).get()
+            .then(snapshot => {
+                    let matchingUser = [];
 
-        maps.doc(id).set({...req.body, created: moment(), id, created_by: userId})
-            .then(() => {
-                maps.doc(id).get()
-                .then(doc => {
-                    users.doc(userId).update({
-                        maps: firebase.firestore.FieldValue.arrayUnion(doc.data())
-                    }) ;
-                    return {code : 200, data: doc.data()};
-                });
-            })
+                    snapshot.forEach(doc => {
+                        matchingUser.push(doc.data());
+                    })
+                    
+                    maps.doc(id).set({...req.body, created: moment(), id, created_by: email})
+                        .then(() => {
+                            maps.doc(id).get()
+                            .then(doc => {
+                                const info = doc.data();
+                                const creatorId = matchingUser[0].id;
+                                const mapArray = [matchingUser[0].maps];
+
+                                mapArray.push(info);
+                                users.doc(creatorId).update('maps', mapArray)
+                                    .then(() => {
+                                        res.send({code : 200, data:info});
+                                    })   
+                            });
+                        })
+                })
             .catch(e => {
+                console.log('ERROR', e);
                 res.send({code: 500, data: e});
             });
+
+        
     });
 });
 
