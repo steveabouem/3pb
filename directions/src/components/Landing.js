@@ -38,7 +38,7 @@ export const Landing = () => {
     ) : (
         <div className={'section-wrap relative  overflow'} onScroll={handleScroll}>
             <Nav />
-            <div className="section-lane between">
+            <div className="section-lane between media-column">
                 <div className="site-title med">
                     <div className="tagline">
                         <div>
@@ -56,7 +56,7 @@ export const Landing = () => {
                     <img src={convo} alt="sms-lost" className="top-logo" />
                 </div>
             </div>
-            <div className="section-lane media-column">
+            <div className="section-lane media-column media-hide">
                 <MapStep title="Étape  1: Sélectionnez" step={1} size="3x">
                     {content.landing.step1}
                 </MapStep>
@@ -67,10 +67,10 @@ export const Landing = () => {
                     {content.landing.step3}
                 </MapStep>
             </div>
-            <div className="inline center" style={{ height: '20%' }}>
+            <div className="inline center media-hide" style={{ height: '20%' }}>
                 <img src={logo} alt="second-logo" className="bottom-logo" /><div>OU-T.app</div>
             </div>
-            <div className="section-lane between">
+            <div className="section-lane between media-hide">
                 <div className="med bold">
                     AFFAIRES: pour tous les business qui veulent faire plus de profits
                 </div>
@@ -78,7 +78,7 @@ export const Landing = () => {
                     INDIVIDUEL: pour tous ceux qui habitent quelque part
                 </div>
             </div>
-            <div className="section-lane between gradient">
+            <div className="section-lane between gradient media-hide">
                 <ul>
                     <li className="list-style">
                         <FontAwesomeIcon icon={icons.faCheckCircle} className="red" />&nbsp;
@@ -117,7 +117,7 @@ export const Landing = () => {
                     </li>
                 </ul>
             </div>
-            <div className="section-lane center ">
+            <div className="section-lane center media-hide">
                 <Link to="/signup">
                     <div className="button standard red-bg white pointer">CRÉER UN PROFIL</div>
                 </Link>

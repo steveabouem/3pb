@@ -10,7 +10,7 @@ const App = () => {
 				<Routing />
 			</FirebaseProvider>
 			<div className="footer">
-				<div className="version flex">V 0.1.1</div>
+				<div className="version flex">V 0.1.2</div>
 			</div>
 		</div>
 	);

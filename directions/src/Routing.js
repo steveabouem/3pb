@@ -13,10 +13,10 @@ export const Routing = () => {
         <Switch>
             <Route exact path="/" component={Landing} />
             <Route path="/map">
-                {!user ? <Redirect to="/signup" /> : <MapMain />}
+                <MapMain />
             </Route>
             <Route path="/map/:id">
-                {!user ? <Redirect to="/signup" /> : <MapMain />}
+                <MapMain />
             </Route>
             <Route path="/signin" component={Authentication} />
             <Route path="/signup" component={Authentication} />
