@@ -14,7 +14,7 @@ export const FirebaseProvider = ({children}) => {
                 getUser(user)
                     .then(res => {
                         if (res.data.code === 200) {
-                            setUser(res.data.data);
+                            setUser({...auth.currentUser, summary: res.data.data,});
                         }
                     })
                     .catch(() => {

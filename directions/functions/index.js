@@ -66,7 +66,10 @@ exports.getUser = functions.https.onRequest((req, res) => {
                     matches.push(doc.data());
                 })
 
-                res.send({code: 200, data:matches[0]});
+                let user = matches[0];
+                user.id = "***";
+                
+                res.send({code: 200, data: user});
             }).catch(function(error) {
                 console.log({error});
                 res.send({code: 500, data: error});

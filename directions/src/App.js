@@ -1,27 +1,13 @@
 import React from 'react';
 import './styles/app.scss';
-import { Switch, Route } from 'react-router-dom';
-import { Landing } from './components/Landing';
-import { MapMain } from './components/MapMain';
 import { FirebaseProvider } from './components/FirbaseProvider';
-import { Authentication } from './components/Authenticattion';
-import { NotFound } from './components/404';
-
+import { Routing } from './Routing';
 
 const App = () => {
 	return (
 		<div className="App">
 			<FirebaseProvider>
-				<Switch>
-					<Route exact path="/" component={Landing}/>
-					<Route path="/map" component={MapMain}/>
-					<Route path="/map/:id" component={MapMain}/>
-					<Route path="/signin" component={Authentication}/>
-					<Route path="/signup" component={Authentication}/>
-					<Route exact path="*">
-						<NotFound/>
-					</Route>
-				</Switch>
+				<Routing />
 			</FirebaseProvider>
 			<div className="footer">
 				<div className="version flex">V 0.1.1</div>

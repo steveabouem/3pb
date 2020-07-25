@@ -8,7 +8,7 @@ import { Nav } from './Nav';
 import { UserContext } from '../helpers/contexts';
 
 export const Authentication = () => {
-    const {auth, user} = useContext(UserContext);
+    const {auth} = useContext(UserContext);
 
     const [loading, setLoading] = useState(false);
     const location = useLocation();
@@ -72,6 +72,7 @@ export const Authentication = () => {
                 >
                     {({ touched, errors, values, submitForm, isValid, isSubmitting, resetForm }) => (
                         <div className="section-wrap flex align-center reveal">
+                            <h3>{ isSigningIn ? 'Connectez-vous' : 'Enregistrez-vous' }</h3>
                             <div className="form-bg column white-bg">
                                 {/* <div className="curved-bg-element top"/>
                                 <div className="curved-bg-element middle"/>
@@ -100,7 +101,6 @@ export const Authentication = () => {
                                 )}
                                 <div className="section-lane start">
                                     <div className="button" onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}>{isSigningIn ? 'Connectez-vous' : 'Enregistrez-vous'}</div>
-                                    {/* <FontAwesomeIcon className={'icon' + (!isValid ? ' inactive' : ' pointer')} icon={icons.faPlay} onClick={(isValid && !isSubmitting) ?() => submitForm(values) : null}/> */}
                                 </div>
                             </div>
                         </div>
